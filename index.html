@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday, Rainy</title>
-    <!-- Google Fonts: Prompt & Italic look -->
+    <!-- Google Fonts: Prompt -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <style>
         * {
@@ -59,7 +59,7 @@
         .slideshow-container {
             position: relative;
             width: 100%;
-            height: 350px;
+            height: 380px;
             border-radius: 12px;
             overflow: hidden;
             background: #f0ebe1;
@@ -86,7 +86,8 @@
         .slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* ปรับเป็น contain เพื่อไม่ให้รูปโดนตัดขอบ */
+            background-color: #1a1a1a;
         }
 
         /* Narrative Caption */
@@ -97,6 +98,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 0 10px;
         }
 
         .caption-text {
@@ -143,35 +145,55 @@
 <body>
 
     <div class="container">
-        <!-- ปุ่มจำลองเปิดเพลง/เสียงบรรยาย -->
-        <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 เปิดเพลงประกอบ & เสียงบรรยาย</button>
+        <!-- ปุ่มเปิด/ปิดเพลงประกอบ -->
+        <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 เปิดเพลงประกอบ</button>
 
-        <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
+        <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ (รองรับ pic0 ถึง pic32) -->
         <div class="slideshow-container" id="slideshow">
-            <!-- สไลด์ที่ 1 -->
-            <div class="slide active">
-                <!-- แทนที่ลิงก์รูปภาพด้วยรูปความทรงจำจริงของคุณ -->
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Memory 1">
-            </div>
-            <!-- สไลด์ที่ 2 -->
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Memory 2">
-            </div>
-            <!-- สไลด์ที่ 3 -->
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Memory 3">
-            </div>
+            <div class="slide active"><img src="pic0.jpg" alt="Memory 0"></div>
+            <div class="slide"><img src="pic1.jpg" alt="Memory 1"></div>
+            <div class="slide"><img src="pic2.jpg" alt="Memory 2"></div>
+            <div class="slide"><img src="pic3.jpg" alt="Memory 3"></div>
+            <div class="slide"><img src="pic4.jpg" alt="Memory 4"></div>
+            <div class="slide"><img src="pic5.jpg" alt="Memory 5"></div>
+            <div class="slide"><img src="pic6.jpg" alt="Memory 6"></div>
+            <div class="slide"><img src="pic7.jpg" alt="Memory 7"></div>
+            <div class="slide"><img src="pic8.jpg" alt="Memory 8"></div>
+            <div class="slide"><img src="pic9.jpg" alt="Memory 9"></div>
+            <div class="slide"><img src="pic10.jpg" alt="Memory 10"></div>
+            <div class="slide"><img src="pic11.jpg" alt="Memory 11"></div>
+            <div class="slide"><img src="pic12.jpg" alt="Memory 12"></div>
+            <div class="slide"><img src="pic13.jpg" alt="Memory 13"></div>
+            <div class="slide"><img src="pic14.jpg" alt="Memory 14"></div>
+            <div class="slide"><img src="pic15.jpg" alt="Memory 15"></div>
+            <div class="slide"><img src="pic16.jpg" alt="Memory 16"></div>
+            <div class="slide"><img src="pic17.jpg" alt="Memory 17"></div>
+            <div class="slide"><img src="pic18.jpg" alt="Memory 18"></div>
+            <div class="slide"><img src="pic19.jpg" alt="Memory 19"></div>
+            <div class="slide"><img src="pic20.jpg" alt="Memory 20"></div>
+            <div class="slide"><img src="pic21.jpg" alt="Memory 21"></div>
+            <div class="slide"><img src="pic22.jpg" alt="Memory 22"></div>
+            <div class="slide"><img src="pic23.jpg" alt="Memory 23"></div>
+            <div class="slide"><img src="pic24.jpg" alt="Memory 24"></div>
+            <div class="slide"><img src="pic25.jpg" alt="Memory 25"></div>
+            <div class="slide"><img src="pic26.jpg" alt="Memory 26"></div>
+            <div class="slide"><img src="pic27.jpg" alt="Memory 27"></div>
+            <div class="slide"><img src="pic28.jpg" alt="Memory 28"></div>
+            <div class="slide"><img src="pic29.jpg" alt="Memory 29"></div>
+            <div class="slide"><img src="pic30.jpg" alt="Memory 30"></div>
+            <div class="slide"><img src="pic31.jpg" alt="Memory 31"></div>
+            <div class="slide"><img src="pic32.jpg" alt="Memory 32"></div>
         </div>
 
-        <!-- กล่องข้อความบรรยายความรู้สึก (จะเปลี่ยนไปตามสไลด์) -->
+        <!-- กล่องข้อความบรรยายความรู้สึก (จะเปลี่ยนตามรูป) -->
         <div class="caption-box">
-            <p class="caption-text" id="captionText">สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกช่วงเวลาตลอด 3 ปี 5 เดือนที่ผ่านมา ที่เคยเติบโตมาด้วยกัน</p>
+            <p class="caption-text" id="captionText">สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกความทรงจำที่ดีตลอดมา</p>
         </div>
 
-        <!-- ปุ่มกดเปลี่ยนสไลด์ -->
+        <!-- ปุ่มกดเปลี่ยนรูป -->
         <div class="nav-buttons">
-            <button class="btn" onclick="changeSlide(-1)">ย้อนกลับ</button>
-            <button class="btn" onclick="changeSlide(1)">รูปถัดไป</button>
+            <button class="btn" onclick="changeSlide(-1)">◀ รูปก่อนหน้า</button>
+            <button class="btn" onclick="changeSlide(1)">รูปถัดไป ▶</button>
         </div>
 
         <div class="footer-note">
@@ -179,20 +201,28 @@
         </div>
     </div>
 
-    <!-- Audio Element (คุณสามารถเปลี่ยนลิงก์เพลง หรือไฟล์เสียงบรรยายตรงนี้ได้ทีหลัง) -->
+    <!-- ไฟล์เพลงประกอบ (ใส่ชื่อไฟล์เพลงของคุณตรง src) -->
     <audio id="bgMusic" loop>
-        <source src="" type="audio/mp3">
+        <source src="song.mp3" type="audio/mp3">
     </audio>
 
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         
-        // ข้อความบรรยายในแต่ละรูป (คุณสามารถปรับเปลี่ยนข้อความตรงนี้ได้ตามใจชอบเลยครับ)
+        // ข้อความบรรยายในแต่ละรูป (คุณสามารถแก้ไขข้อความในเครื่องหมายคำพูดแต่ละอันได้ตามใจชอบเลยครับ)
         const captions = [
-            "สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกช่วงเวลาตลอด 3 ปี 5 เดือนที่ผ่านมา ที่เคยเติบโตมาด้วยกัน",
-            "ทุกความทรงจำและรอยยิ้มที่เราเคยมีร่วมกัน มันยังคงเป็นบทเรียนและเรื่องราวที่สวยงามที่สุดในใจเสมอ",
-            "ขอให้เธอมีความสุขในทุกๆ เส้นทางที่ก้าวเดินไป ขอให้เป็นปีที่ดีและเต็มไปด้วยรอยยิ้มนะ"
+            "สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกความทรงจำที่ดีตลอดมา",
+            "ทุกเรื่องราวที่เราเคยมีร่วมกัน ยังคงเป็นความประทับใจในใจเสมอ",
+            "ไม่ว่าเวลาจะผ่านไปนานแค่ไหน เรื่องราวเหล่านี้ก็ยังมีค่าเสมอ",
+            "ขอให้เธอมีความสุขมากๆ ในทุกๆ วันและทุกเส้นทางที่เดินไป",
+            "ขอให้เป็นปีที่ดีและเต็มไปด้วยรอยยิ้มนะ",
+            "ภาพความทรงจำที่เราเคยเติบโตมาด้วยกัน...",
+            "รอยยิ้มและเสียงหัวเราะในวันนั้น...",
+            "ขอบคุณที่เคย 3 ปี 5 เดือนที่ผ่านมา ที่ทำให้ได้เรียนรู้หลายๆ อย่าง",
+            "ไม่ว่าจะเกิดอะไรขึ้น เธอก็ยังคงเป็นความทรงจำที่สวยงาม",
+            "ขอให้เธอประสบความสำเร็จในสิ่งที่ฝันไว้นะ",
+            // (คุณสามารถพิมพ์ข้อความเพิ่มหรือแก้ตรงนี้ให้ตรงกับรูป pic10 - pic32 ได้เลยครับ ถ้าไม่แก้ระบบจะใช้ข้อความวนซ้ำอัตโนมัติ)
         ];
 
         const captionElement = document.getElementById('captionText');
@@ -204,7 +234,8 @@
                     slide.classList.add('active');
                 }
             });
-            captionElement.textContent = captions[currentSlide];
+            // ถ้ามีข้อความใน captions จะแสดงตามนั้น ถ้าหมดจะใช้ข้อความสำรอง
+            captionElement.textContent = captions[currentSlide] || "สุขสันต์วันเกิดนะเรนนี่ ขอให้มีความสุขมากๆ ในทุกๆ วัน";
         }
 
         function changeSlide(direction) {
@@ -217,20 +248,19 @@
             updateSlide();
         }
 
-        // ฟังก์ชันจำลองเปิดเพลง
+        // ระบบควบคุมเพลง
         let isPlaying = false;
         function toggleMusic() {
             const btn = document.getElementById('musicToggleBtn');
             const audio = document.getElementById('bgMusic');
             
-            // หมายเหตุ: ตรงนี้ถ้ายังไม่มีไฟล์เพลง ระบบจะแค่เปลี่ยนสถานะปุ่มจำลองให้ดูก่อนครับ
             isPlaying = !isPlaying;
             if (isPlaying) {
                 btn.textContent = "⏸ ปิดเพลงประกอบ";
-                // audio.play(); // เปิดใช้บรรทัดนี้เมื่อใส่ลิงก์เพลงจริง
+                audio.play();
             } else {
-                btn.textContent = "🎵 เปิดเพลงประกอบ & เสียงบรรยาย";
-                // audio.pause(); // เปิดใช้บรรทัดนี้เมื่อใส่ลิงก์เพลงจริง
+                btn.textContent = "🎵 เปิดเพลงประกอบ";
+                audio.pause();
             }
         }
     </script>
