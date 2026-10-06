@@ -37,7 +37,39 @@
             position: relative;
         }
 
-        /* Audio Player Section */
+        /* Voice Note Section (เสียงบรรยาย: เล่นอัตโนมัติ ห้ามฟอร์เวิร์ด ย้อนได้ 5 วิ) */
+        .voice-note-box {
+            background: #f4efe6;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .voice-title {
+            font-size: 14px;
+            color: #5c5042;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .voice-progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e8dcc4;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+            pointer-events: none; /* ห้ามกดเลื่อนไปข้างหน้า */
+        }
+
+        .voice-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #a8937e;
+        }
+
+        /* Audio Player Section (เครื่องเล่นเพลงด้านล่าง: ปิดไว้ก่อนตอนแรก, ควบคุมอิสระ) */
         .audio-player-box {
             background: #f4efe6;
             padding: 15px;
@@ -51,29 +83,33 @@
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .progress-bar-container {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: #e8dcc4;
-            border-radius: 4px;
+            border-radius: 5px;
             overflow: hidden;
             cursor: pointer;
             margin-bottom: 12px;
+            position: relative;
         }
 
         .progress-bar {
             width: 0%;
             height: 100%;
             background: #a8937e;
-            transition: width 0.1s linear;
+            pointer-events: none;
         }
 
         .audio-controls {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .audio-btn {
@@ -90,6 +126,57 @@
 
         .audio-btn:hover {
             background: #dfcfb2;
+        }
+
+        /* Playlist Section */
+        .playlist-box {
+            margin-top: 15px;
+            border-top: 1px solid #e8dcc4;
+            padding-top: 12px;
+            text-align: left;
+        }
+
+        .playlist-title {
+            font-size: 13px;
+            color: #7a6a56;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .playlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #5c5042;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .playlist-item:hover {
+            background: #eae2d0;
+        }
+
+        .playlist-item.active-song {
+            background: #e2d4bc;
+            font-weight: 500;
+        }
+
+        .song-dl-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            color: #5c5042;
+            border-radius: 4px;
+        }
+
+        .song-dl-btn:hover {
+            background: #d4c4ac;
         }
 
         /* Slideshow Section with Zoom Capability */
@@ -180,6 +267,7 @@
             display: flex;
             justify-content: space-between;
             gap: 10px;
+            margin-bottom: 25px;
         }
 
         .btn {
@@ -217,20 +305,6 @@
 <body>
 
     <div class="container">
-        <!-- ระบบเสียงบรรยายพร้อมแถบเวลา -->
-        <div class="audio-player-box">
-            <div class="audio-info">
-                <span>🎙️ เสียงบรรยายความรู้สึก</span>
-                <span id="timeDisplay">0:00 / 0:00</span>
-            </div>
-            <div class="progress-bar-container" id="progressBarContainer" onclick="seekAudio(event)">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <div class="audio-controls">
-                <button class="audio-btn" onclick="rewindAudio()">⏪ ย้อนกลับ 5 วินาที</button>
-            </div>
-        </div>
-
         <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
         <div class="slideshow-container" id="slideshow">
             <div class="slide active"><img src="pic0.jpeg" alt="Memory 0"></div>
@@ -284,15 +358,50 @@
             <button class="btn" id="nextBtn" onclick="changeSlide(1)">รูปถัดไป ▶</button>
         </div>
 
+        <!-- 🎙️ ส่วนเสียงบรรยาย (เปิดเว็บเล่นทันทีอัตโนมัติ, ห้ามหยุด/ห้ามฟอร์เวิร์ด, ย้อนกลับได้ 5 วิ) -->
+        <div class="voice-note-box">
+            <div class="voice-title">🎙️ เสียงความรู้สึกจากใจ</div>
+            <div class="audio-info">
+                <span>กำลังเล่นบรรยาย</span>
+                <span id="voiceTimeDisplay">0:00 / 0:00</span>
+            </div>
+            <div class="voice-progress-container">
+                <div class="voice-progress-bar" id="voiceProgressBar"></div>
+            </div>
+            <div class="audio-controls">
+                <button class="audio-btn" onclick="rewindVoice()">⏪ ย้อนกลับ 5 วินาที</button>
+            </div>
+        </div>
+
+        <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก, เลื่อน/กดเล่นได้อิสระทีหลัง) -->
+        <div class="audio-player-box">
+            <div class="audio-info">
+                <span id="currentSongTitle">🎵 เพลงที่คุณร้อง (เลือกฟังด้านล่างได้เลย)</span>
+                <span id="timeDisplay">0:00 / 0:00</span>
+            </div>
+            <div class="progress-bar-container" id="progressBarContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="audio-controls">
+                <button class="audio-btn" onclick="prevSong()">⏮ เพลงก่อนหน้า</button>
+                <button class="audio-btn" id="playPauseBtn" onclick="togglePlayPause()">▶ เล่นเพลง</button>
+                <button class="audio-btn" onclick="nextSong()">เพลงถัดไป ⏭</button>
+            </div>
+
+            <div class="playlist-box">
+                <div class="playlist-title">🎶 รายการเพลง (คลิกเพื่อฟังทีหลัง):</div>
+                <div id="playlistContainer"></div>
+            </div>
+        </div>
+
         <div class="footer-note">
             HBD Rainy • Wishing you all the best and genuine happiness.
         </div>
     </div>
 
-    <!-- ไฟล์เสียงบรรยาย -->
-    <audio id="bgVoice" autoplay loop preload="auto">
-        <source src="song.mp3" type="audio/mp3">
-    </audio>
+    <!-- Element สำหรับเล่นเสียง -->
+    <audio id="voiceNote" src="voice.mp3" preload="auto"></audio>
+    <audio id="bgVoice" preload="auto"></audio>
 
     <script>
         let currentSlide = 0;
@@ -363,28 +472,153 @@
             document.body.removeChild(a);
         }
 
+        // --- ระบบเสียงบรรยาย (Voice Note: เล่นอัตโนมัติทันทีตอนเข้าเว็บ, ห้ามหยุด/ฟอร์เวิร์ด, ย้อนกลับได้ 5 วิ) ---
+        const voiceNote = document.getElementById('voiceNote');
+        const voiceProgressBar = document.getElementById('voiceProgressBar');
+        const voiceTimeDisplay = document.getElementById('voiceTimeDisplay');
+
+        window.addEventListener('load', () => {
+            voiceNote.play().catch(e => {
+                console.log("Auto-play blocked, waiting for user click");
+                document.body.addEventListener('click', () => {
+                    if (voiceNote.paused) {
+                        voiceNote.play();
+                    }
+                }, { once: true });
+            });
+        });
+
+        function rewindVoice() {
+            voiceNote.currentTime = Math.max(0, voiceNote.currentTime - 5);
+        }
+
+        voiceNote.addEventListener('loadedmetadata', () => {
+            if (voiceNote.duration) {
+                voiceTimeDisplay.textContent = formatTime(0) + ' / ' + formatTime(voiceNote.duration);
+            }
+        });
+
+        voiceNote.addEventListener('timeupdate', () => {
+            if (voiceNote.duration) {
+                const progressPercent = (voiceNote.currentTime / voiceNote.duration) * 100;
+                voiceProgressBar.style.width = progressPercent + '%';
+                voiceTimeDisplay.textContent = formatTime(voiceNote.currentTime) + ' / ' + formatTime(voiceNote.duration);
+            }
+        });
+
+
+        // --- ระบบ Music Player & Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก ให้กดฟังทีหลังได้อิสระ) ---
+        const playlist = [
+            { title: "เพลงที่ 1 (เสียงร้องของคุณ)", src: "music1.mp3" },
+            { title: "เพลงที่ 2 (ความทรงจำของเรา)", src: "music2.mp3" },
+            { title: "เพลงที่ 3 (สุขสันต์วันเกิด)", src: "music3.mp3" },
+            { title: "เพลงที่ 4 (เพลงพิเศษสำหรับเธอ)", src: "music4.mp3" }
+        ];
+
+        let currentSongIndex = 0;
         const audio = document.getElementById('bgVoice');
         const progressBar = document.getElementById('progressBar');
+        const progressBarContainer = document.getElementById('progressBarContainer');
         const timeDisplay = document.getElementById('timeDisplay');
+        const currentSongTitle = document.getElementById('currentSongTitle');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playlistContainer = document.getElementById('playlistContainer');
+        let isSeekingSong = false;
 
-        window.addEventListener('click', () => {
+        function renderPlaylist() {
+            playlistContainer.innerHTML = '';
+            playlist.forEach((song, index) => {
+                const item = document.createElement('div');
+                item.className = `playlist-item ${index === currentSongIndex ? 'active-song' : ''}`;
+                
+                const songInfo = document.createElement('span');
+                songInfo.style.flex = '1';
+                songInfo.textContent = `${index + 1}. ${song.title}`;
+                songInfo.onclick = () => {
+                    loadSong(index);
+                    audio.play();
+                    updatePlayPauseButton();
+                };
+
+                const dlBtn = document.createElement('button');
+                dlBtn.className = 'song-dl-btn';
+                dlBtn.innerHTML = '📥 ดาวน์โหลด';
+                dlBtn.title = 'ดาวน์โหลดเพลงนี้';
+                dlBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const a = document.createElement('a');
+                    a.href = song.src;
+                    a.download = song.src;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+
+                item.appendChild(songInfo);
+                item.appendChild(dlBtn);
+                playlistContainer.appendChild(item);
+            });
+        }
+
+        function loadSong(index) {
+            currentSongIndex = index;
+            audio.src = playlist[currentSongIndex].src;
+            currentSongTitle.textContent = `🎵 กำลังเล่น: ${playlist[currentSongIndex].title}`;
+            renderPlaylist();
+        }
+
+        function togglePlayPause() {
             if (audio.paused) {
-                audio.play().catch(e => console.log("Autoplay blocked"));
+                // ถ้าเพลงยังไม่เคยถูกโหลดไฟล์ แอตทริบิวต์ src อาจจะว่าง ให้โหลดเพลงแรกก่อน
+                if (!audio.src || audio.src === window.location.href) {
+                    loadSong(0);
+                }
+                audio.play().catch(e => console.log("Play blocked"));
+                playPauseBtn.textContent = "⏸ หยุดเพลง";
+            } else {
+                audio.pause();
+                playPauseBtn.textContent = "▶ เล่นเพลง";
             }
-        }, { once: true });
+        }
+
+        function updatePlayPauseButton() {
+            if (audio.paused) {
+                playPauseBtn.textContent = "▶ เล่นเพลง";
+            } else {
+                playPauseBtn.textContent = "⏸ หยุดเพลง";
+            }
+        }
+
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            loadSong(currentSongIndex);
+            audio.play();
+            updatePlayPauseButton();
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+            audio.play();
+            updatePlayPauseButton();
+        }
 
         audio.addEventListener('loadedmetadata', () => {
             if (audio.duration) {
-                timeDisplay.textContent = formatTime(0) + ' / ' + formatTime(audio.duration);
+                timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
             }
         });
 
         audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
+            if (audio.duration && !isSeekingSong) {
                 const progressPercent = (audio.currentTime / audio.duration) * 100;
                 progressBar.style.width = progressPercent + '%';
                 timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
             }
+        });
+
+        audio.addEventListener('ended', () => {
+            nextSong();
         });
 
         function formatTime(seconds) {
@@ -393,18 +627,101 @@
             return mins + ':' + (secs < 10 ? '0' : '') + secs;
         }
 
-        function rewindAudio() {
-            audio.currentTime = Math.max(0, audio.currentTime - 5);
-        }
+        function setSongPosition(e) {
+            const rect = progressBarContainer.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clickPosition = (clientX - rect.left) / rect.width;
+            clickPosition = Math.max(0, Math.min(1, clickPosition));
 
-        function seekAudio(event) {
-            const container = document.getElementById('progressBarContainer');
-            const clickPosition = event.offsetX / container.offsetWidth;
             if (audio.duration) {
-                audio.currentTime = clickPosition * audio.duration;
+                progressBar.style.width = (clickPosition * 100) + '%';
+                timeDisplay.textContent = formatTime(clickPosition * audio.duration) + ' / ' + formatTime(audio.duration);
             }
+            return clickPosition;
         }
 
+        progressBarContainer.addEventListener('mousedown', (e) => {
+            isSeekingSong = true;
+            setSongPosition(e);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isSeekingSong) {
+                setSongPosition(e);
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isSeekingSong) {
+                isSeekingSong = false;
+                const finalPos = setSongPosition(e);
+                if (audio.duration) {
+                    audio.currentTime = finalPos * audio.duration;
+                }
+            }
+        });
+
+        progressBarContainer.addEventListener('touchstart', (e) => {
+            isSeekingSong = true;
+            setSongPosition(e);
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (isSeekingSong) {
+                setSongPosition(e);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            if (isSeekingSong) {
+                isSeekingSong = false;
+                const rect = progressBarContainer.getBoundingClientRect();
+                const touch = e.changedTouches[0];
+                let clickPosition = (touch.clientX - rect.left) / rect.width;
+                clickPosition = Math.max(0, Math.min(1, clickPosition));
+                if (audio.duration) {
+                    audio.currentTime = clickPosition * audio.duration;
+                }
+            }
+        });
+
+        // กำหนดรายการเพลงเตรียมไว้ แต่ยังไม่สั่งเล่นอัตโนมัติ (ให้เสียงบรรยายเล่นคนเดียว)
+        playlistContainer.innerHTML = '';
+        playlist.forEach((song, index) => {
+            const item = document.createElement('div');
+            item.className = `playlist-item ${index === currentSongIndex ? 'active-song' : ''}`;
+            
+            const songInfo = document.createElement('span');
+            songInfo.style.flex = '1';
+            songInfo.textContent = `${index + 1}. ${song.title}`;
+            songInfo.onclick = () => {
+                loadSong(index);
+                audio.play();
+                updatePlayPauseButton();
+            };
+
+            const dlBtn = document.createElement('button');
+            dlBtn.className = 'song-dl-btn';
+            dlBtn.innerHTML = '📥 ดาวน์โหลด';
+            dlBtn.title = 'ดาวน์โหลดเพลงนี้';
+            dlBtn.onclick = (e) => {
+                e.stopPropagation();
+                const a = document.createElement('a');
+                a.href = song.src;
+                a.download = song.src;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            item.appendChild(songInfo);
+            item.appendChild(dlBtn);
+            playlistContainer.appendChild(item);
+        });
+        currentSongTitle.textContent = `🎵 เพลงที่คุณร้อง (เลือกฟังด้านล่างได้เลย)`;
+
+
+        // --- ระบบซูมภาพ (Zoom & Pan) ---
         let scale = 1;
         let pannedX = 0, pannedY = 0;
         let startX = 0, startY = 0;
@@ -486,7 +803,6 @@
             img.style.transform = `scale(${scale}) translate(${pannedX / scale}px, ${pannedY / scale}px)`;
         }
 
-        // เริ่มต้นแสดงผลรูปแรกและข้อความตั้งแต่เปิดเว็บ
         updateSlide();
     </script>
 
