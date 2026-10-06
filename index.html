@@ -26,6 +26,63 @@
             padding: 20px;
         }
 
+        /* หน้าต่าง Tap to Start คลุมทับหน้าเว็บโปร่งใส */
+        #welcomeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(74, 66, 56, 0.6); /* สีเทาเข้มโปร่งใส มองเห็นเว็บข้างหลังลางๆ */
+            backdrop-filter: blur(4px); /* เบลอฉากหลังนิดหน่อยให้ดูละมุน */
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-card {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 350px;
+        }
+
+        .welcome-card h2 {
+            font-size: 18px;
+            color: #4a4238;
+            margin-bottom: 10px;
+        }
+
+        .welcome-card p {
+            font-size: 13px;
+            color: #8c7e6d;
+            margin-bottom: 20px;
+        }
+
+        .start-btn {
+            background: #a8937e;
+            color: #ffffff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+        }
+
+        .start-btn:hover {
+            background: #957f6b;
+            transform: scale(1.02);
+        }
+
         .container {
             max-width: 600px;
             width: 100%;
@@ -61,8 +118,7 @@
             overflow: hidden;
             margin-bottom: 12px;
             position: relative;
-            /* ตอนแรกยังไม่จบ จะห้ามคลิกเลื่อน */
-            pointer-events: none; 
+            pointer-events: none; /* ตอนแรกยังไม่จบ จะห้ามคลิกเลื่อน */
             cursor: default;
         }
 
@@ -312,6 +368,15 @@
 </head>
 <body>
 
+    <!-- หน้าต่าง Tap to Start (สีเทาโปร่งใส คลุมทับเว็บด้านหลัง) -->
+    <div id="welcomeOverlay">
+        <div class="welcome-card">
+            <h2>✨ Happy Birthday, Rainy</h2>
+            <p>กดปุ่มด้านล่างเพื่อเริ่มดูความทรงจำและฟังเสียงบรรยาย</p>
+            <button class="start-btn" onclick="startExperience()">Tap to Start</button>
+        </div>
+    </div>
+
     <div class="container">
         <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
         <div class="slideshow-container" id="slideshow">
@@ -366,7 +431,7 @@
             <button class="btn" id="nextBtn" onclick="changeSlide(1)">รูปถัดไป ▶</button>
         </div>
 
-        <!-- 🎙️ ส่วนเสียงบรรยาย (ตอนแรกบังคับฟัง ห้ามฟอร์เวิร์ด ย้อนได้ 5 วิ | พอฟังจบจะปลดล็อกให้กดหยุด/กดเลื่อนแถบเวลาได้) -->
+        <!-- 🎙️ ส่วนเสียงบรรยาย -->
         <div class="voice-note-box" id="voiceNoteBox">
             <div class="voice-title" id="voiceTitleText">🎙️ เสียงความรู้สึกจากใจ (กำลังเล่น...)</div>
             <div class="audio-info">
@@ -382,7 +447,7 @@
             </div>
         </div>
 
-        <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก ให้กดฟังทีหลังได้อิสระ) -->
+        <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก) -->
         <div class="audio-player-box">
             <div class="audio-info">
                 <span id="currentSongTitle">🎵 เพลงที่คุณร้อง (เลือกฟังด้านล่างได้เลย)</span>
@@ -481,7 +546,7 @@
             document.body.removeChild(a);
         }
 
-        // --- ระบบเสียงบรรยาย (Voice Note: ตอนแรกบังคับฟังจบแล้วปลดล็อกให้หยุด/เลื่อนได้) ---
+        // --- ฟังก์ชันกด Tap to Start เพื่อเปิดหน้าเว็บและเล่นเสียงบรรยายทันที ---
         const voiceNote = document.getElementById('voiceNote');
         const voiceProgressBar = document.getElementById('voiceProgressBar');
         const voiceProgressContainer = document.getElementById('voiceProgressContainer');
@@ -492,23 +557,25 @@
         let isVoiceUnlocked = false;
         let isSeekingVoice = false;
 
-        window.addEventListener('load', () => {
+        function startExperience() {
+            const overlay = document.getElementById('welcomeOverlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+
+            // สั่งเล่นเสียงบรรยายทันทีหลังจากคลิกปุ่ม
             voiceNote.play().catch(e => {
-                console.log("Auto-play blocked, waiting for user click");
-                document.body.addEventListener('click', () => {
-                    if (voiceNote.paused && !isVoiceUnlocked) {
-                        voiceNote.play();
-                    }
-                }, { once: true });
+                console.log("Audio play error:", e);
             });
-        });
+        }
 
         function rewindVoice() {
             voiceNote.currentTime = Math.max(0, voiceNote.currentTime - 5);
         }
 
         function toggleVoicePlayPause() {
-            if (!isVoiceUnlocked) return; // ถ้ายังไม่จบ ห้ามหยุดเล่นเองอิสระ (ต้องฟังให้จบก่อน)
+            if (!isVoiceUnlocked) return; 
             if (voiceNote.paused) {
                 voiceNote.play();
                 voicePlayPauseBtn.textContent = "⏸ หยุดเสียงบรรยาย";
@@ -537,16 +604,11 @@
             isVoiceUnlocked = true;
             voiceTitleText.textContent = "🎙️ เสียงความรู้สึกจากใจ (ฟังจบแล้ว - ปลดล็อกแล้ว)";
             voiceStatusLabel.textContent = "ปลดล็อกแล้ว (เลื่อน/หยุดได้)";
-            
-            // เปิดให้คลิกแถบเวลาเพื่อเลื่อนไปฟังท่อนไหนก็ได้
             voiceProgressContainer.classList.add('unlocked');
-            
-            // แสดงปุ่ม Play/Pause เพิ่มขึ้นมาให้กดหยุดหรือเล่นซ้ำได้อิสระ
             voicePlayPauseBtn.style.display = 'inline-block';
             voicePlayPauseBtn.textContent = "▶ เล่นเสียงบรรยายซ้ำ";
         });
 
-        // ฟังก์ชันเลื่อนแถบเวลาเสียงบรรยาย (ทำงานได้เฉพาะตอนปลดล็อกแล้วเท่านั้น)
         function setVoicePosition(e) {
             if (!isVoiceUnlocked) return 0;
             const rect = voiceProgressContainer.getBoundingClientRect();
@@ -582,7 +644,7 @@
         });
 
 
-        // --- ระบบ Music Player & Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก ให้กดฟังทีหลังได้อิสระ) ---
+        // --- ระบบ Music Player & Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก) ---
         const playlist = [
             { title: "เพลงที่ 1 (เสียงร้องของคุณ)", src: "music1.mp3" },
             { title: "เพลงที่ 2 (ความทรงจำของเรา)", src: "music2.mp3" },
