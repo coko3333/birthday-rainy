@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Rainy</title>
+    <!-- Google Fonts: Prompt & Italic look -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #fcf9f5;
+            color: #4a4238;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Music Control Button */
+        .music-btn {
+            background: #e8dcc4;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            color: #5c5042;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+        .music-btn:hover {
+            background: #dfcfb2;
+        }
+
+        /* Slideshow Section */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f0ebe1;
+            margin-bottom: 20px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Narrative Caption */
+        .caption-box {
+            min-height: 80px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .caption-text {
+            font-size: 16px;
+            color: #6b5e50;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            background: #f4efe6;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 15px;
+            color: #5c5042;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #e8dcc4;
+        }
+
+        /* Footer message */
+        .footer-note {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #9c8e7e;
+            border-top: 1px solid #f0ebe1;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ปุ่มจำลองเปิดเพลง/เสียงบรรยาย -->
+        <button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()">🎵 เปิดเพลงประกอบ & เสียงบรรยาย</button>
+
+        <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
+        <div class="slideshow-container" id="slideshow">
+            <!-- สไลด์ที่ 1 -->
+            <div class="slide active">
+                <!-- แทนที่ลิงก์รูปภาพด้วยรูปความทรงจำจริงของคุณ -->
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Memory 1">
+            </div>
+            <!-- สไลด์ที่ 2 -->
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Memory 2">
+            </div>
+            <!-- สไลด์ที่ 3 -->
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80" alt="Memory 3">
+            </div>
+        </div>
+
+        <!-- กล่องข้อความบรรยายความรู้สึก (จะเปลี่ยนไปตามสไลด์) -->
+        <div class="caption-box">
+            <p class="caption-text" id="captionText">สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกช่วงเวลาตลอด 3 ปี 5 เดือนที่ผ่านมา ที่เคยเติบโตมาด้วยกัน</p>
+        </div>
+
+        <!-- ปุ่มกดเปลี่ยนสไลด์ -->
+        <div class="nav-buttons">
+            <button class="btn" onclick="changeSlide(-1)">ย้อนกลับ</button>
+            <button class="btn" onclick="changeSlide(1)">รูปถัดไป</button>
+        </div>
+
+        <div class="footer-note">
+            HBD Rainy • Wishing you all the best and genuine happiness.
+        </div>
+    </div>
+
+    <!-- Audio Element (คุณสามารถเปลี่ยนลิงก์เพลง หรือไฟล์เสียงบรรยายตรงนี้ได้ทีหลัง) -->
+    <audio id="bgMusic" loop>
+        <source src="" type="audio/mp3">
+    </audio>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        // ข้อความบรรยายในแต่ละรูป (คุณสามารถปรับเปลี่ยนข้อความตรงนี้ได้ตามใจชอบเลยครับ)
+        const captions = [
+            "สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกช่วงเวลาตลอด 3 ปี 5 เดือนที่ผ่านมา ที่เคยเติบโตมาด้วยกัน",
+            "ทุกความทรงจำและรอยยิ้มที่เราเคยมีร่วมกัน มันยังคงเป็นบทเรียนและเรื่องราวที่สวยงามที่สุดในใจเสมอ",
+            "ขอให้เธอมีความสุขในทุกๆ เส้นทางที่ก้าวเดินไป ขอให้เป็นปีที่ดีและเต็มไปด้วยรอยยิ้มนะ"
+        ];
+
+        const captionElement = document.getElementById('captionText');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            captionElement.textContent = captions[currentSlide];
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            }
+            updateSlide();
+        }
+
+        // ฟังก์ชันจำลองเปิดเพลง
+        let isPlaying = false;
+        function toggleMusic() {
+            const btn = document.getElementById('musicToggleBtn');
+            const audio = document.getElementById('bgMusic');
+            
+            // หมายเหตุ: ตรงนี้ถ้ายังไม่มีไฟล์เพลง ระบบจะแค่เปลี่ยนสถานะปุ่มจำลองให้ดูก่อนครับ
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                btn.textContent = "⏸ ปิดเพลงประกอบ";
+                // audio.play(); // เปิดใช้บรรทัดนี้เมื่อใส่ลิงก์เพลงจริง
+            } else {
+                btn.textContent = "🎵 เปิดเพลงประกอบ & เสียงบรรยาย";
+                // audio.pause(); // เปิดใช้บรรทัดนี้เมื่อใส่ลิงก์เพลงจริง
+            }
+        }
+    </script>
+
+</body>
+</html>
