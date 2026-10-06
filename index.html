@@ -37,12 +37,13 @@
             position: relative;
         }
 
-        /* Voice Note Section (เสียงบรรยาย: เล่นอัตโนมัติ ห้ามฟอร์เวิร์ด ย้อนได้ 5 วิ) */
+        /* Voice Note Section */
         .voice-note-box {
             background: #f4efe6;
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 20px;
+            transition: background 0.3s;
         }
 
         .voice-title {
@@ -60,7 +61,14 @@
             overflow: hidden;
             margin-bottom: 12px;
             position: relative;
-            pointer-events: none; /* ห้ามกดเลื่อนไปข้างหน้า */
+            /* ตอนแรกยังไม่จบ จะห้ามคลิกเลื่อน */
+            pointer-events: none; 
+            cursor: default;
+        }
+
+        .voice-progress-container.unlocked {
+            pointer-events: auto;
+            cursor: pointer;
         }
 
         .voice-progress-bar {
@@ -69,7 +77,7 @@
             background: #a8937e;
         }
 
-        /* Audio Player Section (เครื่องเล่นเพลงด้านล่าง: ปิดไว้ก่อนตอนแรก, ควบคุมอิสระ) */
+        /* Audio Player Section (เครื่องเล่นเพลงด้านล่าง: ปิดไว้ก่อนตอนแรก) */
         .audio-player-box {
             background: #f4efe6;
             padding: 15px;
@@ -358,22 +366,23 @@
             <button class="btn" id="nextBtn" onclick="changeSlide(1)">รูปถัดไป ▶</button>
         </div>
 
-        <!-- 🎙️ ส่วนเสียงบรรยาย (เปิดเว็บเล่นทันทีอัตโนมัติ, ห้ามหยุด/ห้ามฟอร์เวิร์ด, ย้อนกลับได้ 5 วิ) -->
-        <div class="voice-note-box">
-            <div class="voice-title">🎙️ เสียงความรู้สึกจากใจ</div>
+        <!-- 🎙️ ส่วนเสียงบรรยาย (ตอนแรกบังคับฟัง ห้ามฟอร์เวิร์ด ย้อนได้ 5 วิ | พอฟังจบจะปลดล็อกให้กดหยุด/กดเลื่อนแถบเวลาได้) -->
+        <div class="voice-note-box" id="voiceNoteBox">
+            <div class="voice-title" id="voiceTitleText">🎙️ เสียงความรู้สึกจากใจ (กำลังเล่น...)</div>
             <div class="audio-info">
-                <span>กำลังเล่นบรรยาย</span>
+                <span id="voiceStatusLabel">บังคับฟังจนจบ</span>
                 <span id="voiceTimeDisplay">0:00 / 0:00</span>
             </div>
-            <div class="voice-progress-container">
+            <div class="voice-progress-container" id="voiceProgressContainer">
                 <div class="voice-progress-bar" id="voiceProgressBar"></div>
             </div>
             <div class="audio-controls">
                 <button class="audio-btn" onclick="rewindVoice()">⏪ ย้อนกลับ 5 วินาที</button>
+                <button class="audio-btn" id="voicePlayPauseBtn" onclick="toggleVoicePlayPause()" style="display: none;">▶ เล่น</button>
             </div>
         </div>
 
-        <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก, เลื่อน/กดเล่นได้อิสระทีหลัง) -->
+        <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก ให้กดฟังทีหลังได้อิสระ) -->
         <div class="audio-player-box">
             <div class="audio-info">
                 <span id="currentSongTitle">🎵 เพลงที่คุณร้อง (เลือกฟังด้านล่างได้เลย)</span>
@@ -472,16 +481,22 @@
             document.body.removeChild(a);
         }
 
-        // --- ระบบเสียงบรรยาย (Voice Note: เล่นอัตโนมัติทันทีตอนเข้าเว็บ, ห้ามหยุด/ฟอร์เวิร์ด, ย้อนกลับได้ 5 วิ) ---
+        // --- ระบบเสียงบรรยาย (Voice Note: ตอนแรกบังคับฟังจบแล้วปลดล็อกให้หยุด/เลื่อนได้) ---
         const voiceNote = document.getElementById('voiceNote');
         const voiceProgressBar = document.getElementById('voiceProgressBar');
+        const voiceProgressContainer = document.getElementById('voiceProgressContainer');
         const voiceTimeDisplay = document.getElementById('voiceTimeDisplay');
+        const voiceTitleText = document.getElementById('voiceTitleText');
+        const voiceStatusLabel = document.getElementById('voiceStatusLabel');
+        const voicePlayPauseBtn = document.getElementById('voicePlayPauseBtn');
+        let isVoiceUnlocked = false;
+        let isSeekingVoice = false;
 
         window.addEventListener('load', () => {
             voiceNote.play().catch(e => {
                 console.log("Auto-play blocked, waiting for user click");
                 document.body.addEventListener('click', () => {
-                    if (voiceNote.paused) {
+                    if (voiceNote.paused && !isVoiceUnlocked) {
                         voiceNote.play();
                     }
                 }, { once: true });
@@ -492,6 +507,17 @@
             voiceNote.currentTime = Math.max(0, voiceNote.currentTime - 5);
         }
 
+        function toggleVoicePlayPause() {
+            if (!isVoiceUnlocked) return; // ถ้ายังไม่จบ ห้ามหยุดเล่นเองอิสระ (ต้องฟังให้จบก่อน)
+            if (voiceNote.paused) {
+                voiceNote.play();
+                voicePlayPauseBtn.textContent = "⏸ หยุดเสียงบรรยาย";
+            } else {
+                voiceNote.pause();
+                voicePlayPauseBtn.textContent = "▶ เล่นเสียงบรรยาย";
+            }
+        }
+
         voiceNote.addEventListener('loadedmetadata', () => {
             if (voiceNote.duration) {
                 voiceTimeDisplay.textContent = formatTime(0) + ' / ' + formatTime(voiceNote.duration);
@@ -499,10 +525,59 @@
         });
 
         voiceNote.addEventListener('timeupdate', () => {
-            if (voiceNote.duration) {
+            if (voiceNote.duration && !isSeekingVoice) {
                 const progressPercent = (voiceNote.currentTime / voiceNote.duration) * 100;
                 voiceProgressBar.style.width = progressPercent + '%';
                 voiceTimeDisplay.textContent = formatTime(voiceNote.currentTime) + ' / ' + formatTime(voiceNote.duration);
+            }
+        });
+
+        // เมื่อเสียงบรรยายเล่นจบ! ทำการปลดล็อกทันที
+        voiceNote.addEventListener('ended', () => {
+            isVoiceUnlocked = true;
+            voiceTitleText.textContent = "🎙️ เสียงความรู้สึกจากใจ (ฟังจบแล้ว - ปลดล็อกแล้ว)";
+            voiceStatusLabel.textContent = "ปลดล็อกแล้ว (เลื่อน/หยุดได้)";
+            
+            // เปิดให้คลิกแถบเวลาเพื่อเลื่อนไปฟังท่อนไหนก็ได้
+            voiceProgressContainer.classList.add('unlocked');
+            
+            // แสดงปุ่ม Play/Pause เพิ่มขึ้นมาให้กดหยุดหรือเล่นซ้ำได้อิสระ
+            voicePlayPauseBtn.style.display = 'inline-block';
+            voicePlayPauseBtn.textContent = "▶ เล่นเสียงบรรยายซ้ำ";
+        });
+
+        // ฟังก์ชันเลื่อนแถบเวลาเสียงบรรยาย (ทำงานได้เฉพาะตอนปลดล็อกแล้วเท่านั้น)
+        function setVoicePosition(e) {
+            if (!isVoiceUnlocked) return 0;
+            const rect = voiceProgressContainer.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clickPosition = (clientX - rect.left) / rect.width;
+            clickPosition = Math.max(0, Math.min(1, clickPosition));
+
+            if (voiceNote.duration) {
+                voiceProgressBar.style.width = (clickPosition * 100) + '%';
+                voiceTimeDisplay.textContent = formatTime(clickPosition * voiceNote.duration) + ' / ' + formatTime(voiceNote.duration);
+            }
+            return clickPosition;
+        }
+
+        voiceProgressContainer.addEventListener('mousedown', (e) => {
+            if (!isVoiceUnlocked) return;
+            isSeekingVoice = true;
+            setVoicePosition(e);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isSeekingVoice) setVoicePosition(e);
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isSeekingVoice) {
+                isSeekingVoice = false;
+                const finalPos = setVoicePosition(e);
+                if (voiceNote.duration) {
+                    voiceNote.currentTime = finalPos * voiceNote.duration;
+                }
             }
         });
 
@@ -569,7 +644,6 @@
 
         function togglePlayPause() {
             if (audio.paused) {
-                // ถ้าเพลงยังไม่เคยถูกโหลดไฟล์ แอตทริบิวต์ src อาจจะว่าง ให้โหลดเพลงแรกก่อน
                 if (!audio.src || audio.src === window.location.href) {
                     loadSong(0);
                 }
@@ -646,9 +720,7 @@
         });
 
         window.addEventListener('mousemove', (e) => {
-            if (isSeekingSong) {
-                setSongPosition(e);
-            }
+            if (isSeekingSong) setSongPosition(e);
         });
 
         window.addEventListener('mouseup', (e) => {
@@ -667,9 +739,7 @@
         }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
-            if (isSeekingSong) {
-                setSongPosition(e);
-            }
+            if (isSeekingSong) setSongPosition(e);
         }, { passive: true });
 
         window.addEventListener('touchend', (e) => {
@@ -685,39 +755,7 @@
             }
         });
 
-        // กำหนดรายการเพลงเตรียมไว้ แต่ยังไม่สั่งเล่นอัตโนมัติ (ให้เสียงบรรยายเล่นคนเดียว)
-        playlistContainer.innerHTML = '';
-        playlist.forEach((song, index) => {
-            const item = document.createElement('div');
-            item.className = `playlist-item ${index === currentSongIndex ? 'active-song' : ''}`;
-            
-            const songInfo = document.createElement('span');
-            songInfo.style.flex = '1';
-            songInfo.textContent = `${index + 1}. ${song.title}`;
-            songInfo.onclick = () => {
-                loadSong(index);
-                audio.play();
-                updatePlayPauseButton();
-            };
-
-            const dlBtn = document.createElement('button');
-            dlBtn.className = 'song-dl-btn';
-            dlBtn.innerHTML = '📥 ดาวน์โหลด';
-            dlBtn.title = 'ดาวน์โหลดเพลงนี้';
-            dlBtn.onclick = (e) => {
-                e.stopPropagation();
-                const a = document.createElement('a');
-                a.href = song.src;
-                a.download = song.src;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            };
-
-            item.appendChild(songInfo);
-            item.appendChild(dlBtn);
-            playlistContainer.appendChild(item);
-        });
+        renderPlaylist();
         currentSongTitle.textContent = `🎵 เพลงที่คุณร้อง (เลือกฟังด้านล่างได้เลย)`;
 
 
