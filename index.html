@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, Rainy</title>
+    <title>Happy Birthday Rennie</title>
     <!-- Google Fonts: Prompt -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <style>
@@ -371,8 +371,8 @@
     <!-- หน้าต่าง Tap to Start (สีเทาโปร่งใส คลุมทับเว็บด้านหลัง) -->
     <div id="welcomeOverlay">
         <div class="welcome-card">
-            <h2>✨ Happy Birthday, Rainy</h2>
-            <p>กดปุ่มด้านล่างเพื่อเริ่มดูความทรงจำและฟังเสียงบรรยาย</p>
+            <h2>✨ Happy Birthday to U na Rennie</h2>
+            <p>PRESS START TO LISTEN,VIEW OUR PHOTOS & OUR MEMORIES(PLS PUT YOUR HEADPHONE)</p>
             <button class="start-btn" onclick="startExperience()">Tap to Start</button>
         </div>
     </div>
@@ -417,7 +417,7 @@
 
         <!-- ปุ่มดาวน์โหลดรูปปัจจุบัน -->
         <div class="download-btn-container">
-            <button class="download-btn" onclick="downloadCurrentPhoto()">📥 ดาวน์โหลดรูปภาพนี้</button>
+            <button class="download-btn" onclick="downloadCurrentPhoto()">📥 DOWNLOAD HERE</button>
         </div>
 
         <!-- กล่องข้อความบรรยายความรู้สึก -->
@@ -427,13 +427,13 @@
 
         <!-- ปุ่มกดเปลี่ยนรูป -->
         <div class="nav-buttons">
-            <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ รูปก่อนหน้า</button>
-            <button class="btn" id="nextBtn" onclick="changeSlide(1)">รูปถัดไป ▶</button>
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ BACK</button>
+            <button class="btn" id="nextBtn" onclick="changeSlide(1)">NEXT ▶</button>
         </div>
 
         <!-- 🎙️ ส่วนเสียงบรรยาย -->
         <div class="voice-note-box" id="voiceNoteBox">
-            <div class="voice-title" id="voiceTitleText">🎙️ เสียงความรู้สึกจากใจ (กำลังเล่น...)</div>
+            <div class="voice-title" id="voiceTitleText">🎙️ PLS ฟังให้จบ(NOW PLAYING)</div>
             <div class="audio-info">
                 <span id="voiceStatusLabel">บังคับฟังจนจบ</span>
                 <span id="voiceTimeDisplay">0:00 / 0:00</span>
@@ -442,8 +442,8 @@
                 <div class="voice-progress-bar" id="voiceProgressBar"></div>
             </div>
             <div class="audio-controls">
-                <button class="audio-btn" onclick="rewindVoice()">⏪ ย้อนกลับ 5 วินาที</button>
-                <button class="audio-btn" id="voicePlayPauseBtn" onclick="toggleVoicePlayPause()" style="display: none;">▶ เล่น</button>
+                <button class="audio-btn" onclick="rewindVoice()">⏪ GO BACK 5s</button>
+                <button class="audio-btn" id="voicePlayPauseBtn" onclick="toggleVoicePlayPause()" style="display: none;">▶  เล่น</button>
             </div>
         </div>
 
@@ -457,19 +457,19 @@
                 <div class="progress-bar" id="progressBar"></div>
             </div>
             <div class="audio-controls">
-                <button class="audio-btn" onclick="prevSong()">⏮ เพลงก่อนหน้า</button>
-                <button class="audio-btn" id="playPauseBtn" onclick="togglePlayPause()">▶ เล่นเพลง</button>
-                <button class="audio-btn" onclick="nextSong()">เพลงถัดไป ⏭</button>
+                <button class="audio-btn" onclick="prevSong()">⏮ SKIP BACK</button>
+                <button class="audio-btn" id="playPauseBtn" onclick="togglePlayPause()">▶ PLAY</button>
+                <button class="audio-btn" onclick="nextSong()">SKIP NEXT ⏭</button>
             </div>
 
             <div class="playlist-box">
-                <div class="playlist-title">🎶 รายการเพลง (คลิกเพื่อฟังทีหลัง):</div>
+                <div class="playlist-title">🎶SONG FOR YOU PLS LISINING AFTER MY STORY:</div>
                 <div id="playlistContainer"></div>
             </div>
         </div>
 
         <div class="footer-note">
-            HBD Rainy • Wishing you all the best and genuine happiness.
+            MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE
         </div>
     </div>
 
@@ -483,16 +483,19 @@
         const prevBtn = document.getElementById('prevBtn');
         
         const captions = [
-            "สุขสันต์วันเกิดนะเรนนี่... ขอบคุณสำหรับทุกความทรงจำที่ดีตลอดมา",
-            "ทุกเรื่องราวที่เราเคยมีร่วมกัน ยังคงเป็นความประทับใจในใจเสมอ",
-            "ไม่ว่าเวลาจะผ่านไปนานแค่ไหน เรื่องราวเหล่านี้ก็ยังมีค่าเสมอ",
-            "ขอให้เธอมีความสุขมากๆ ในทุกๆ วันและทุกเส้นทางที่เดินไป",
-            "ขอให้เป็นปีที่ดีและเต็มไปด้วยรอยยิ้มนะ",
-            "", "", "", "", "", "", "", "", "", "", 
+            "MUJI&COKO HAPPYBRITHDAY TO P'RENNIE",
+            "THE MOST BEAUTIFUL PICTURE IN 3/4 & IN MY HEART",
+            "TEACHER P'KO TEACHES RENNIE",
+            "MUJI ZOOM INNN",
+            "FACETIME WITH MUJI",
+            "THE MOST BEAUTIFUL VIEW IN MY LIFE",
+            "THE CUTEST OF YOUR CANDID",
+            "",
+            "", "", "", "", "", "", "", 
             "", "", "", "", "", "", "", "", "", "", 
             "", "", "", "", "", "", "", "", "", "", 
             "", "", 
-            "ขอให้มีความสุขมากๆ ในวันนี้นะ"
+            ""
         ];
 
         const captionElement = document.getElementById('captionText');
@@ -679,8 +682,8 @@
 
                 const dlBtn = document.createElement('button');
                 dlBtn.className = 'song-dl-btn';
-                dlBtn.innerHTML = '📥 ดาวน์โหลด';
-                dlBtn.title = 'ดาวน์โหลดเพลงนี้';
+                dlBtn.innerHTML = '📥 DOWNLOAD';
+                dlBtn.title = 'DOWNLOAD THIS SONG';
                 dlBtn.onclick = (e) => {
                     e.stopPropagation();
                     const a = document.createElement('a');
@@ -700,7 +703,7 @@
         function loadSong(index) {
             currentSongIndex = index;
             audio.src = playlist[currentSongIndex].src;
-            currentSongTitle.textContent = `🎵 กำลังเล่น: ${playlist[currentSongIndex].title}`;
+            currentSongTitle.textContent = `🎵 NOW PLAYING: ${playlist[currentSongIndex].title}`;
             renderPlaylist();
         }
 
@@ -710,18 +713,18 @@
                     loadSong(0);
                 }
                 audio.play().catch(e => console.log("Play blocked"));
-                playPauseBtn.textContent = "⏸ หยุดเพลง";
+                playPauseBtn.textContent = "⏸ STOP";
             } else {
                 audio.pause();
-                playPauseBtn.textContent = "▶ เล่นเพลง";
+                playPauseBtn.textContent = "▶ PLAY";
             }
         }
 
         function updatePlayPauseButton() {
             if (audio.paused) {
-                playPauseBtn.textContent = "▶ เล่นเพลง";
+                playPauseBtn.textContent = "▶ PLAY";
             } else {
-                playPauseBtn.textContent = "⏸ หยุดเพลง";
+                playPauseBtn.textContent = "⏸ STOP";
             }
         }
 
