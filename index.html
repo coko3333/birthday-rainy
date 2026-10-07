@@ -463,13 +463,13 @@
             </div>
 
             <div class="playlist-box">
-                <div class="playlist-title">🎶SONG FOR YOU PLS LISINING AFTER MY STORY:</div>
+                <div class="playlist-title">🎶SONG FOR YOU </div>
                 <div id="playlistContainer"></div>
             </div>
         </div>
 
         <div class="footer-note">
-            MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE
+            MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE .KO
         </div>
     </div>
 
@@ -581,10 +581,10 @@
             if (!isVoiceUnlocked) return; 
             if (voiceNote.paused) {
                 voiceNote.play();
-                voicePlayPauseBtn.textContent = "⏸ หยุดเสียงบรรยาย";
+                voicePlayPauseBtn.textContent = "⏸ STOP";
             } else {
                 voiceNote.pause();
-                voicePlayPauseBtn.textContent = "▶ เล่นเสียงบรรยาย";
+                voicePlayPauseBtn.textContent = "▶ PLAY";
             }
         }
 
@@ -605,11 +605,11 @@
         // เมื่อเสียงบรรยายเล่นจบ! ทำการปลดล็อกทันที
         voiceNote.addEventListener('ended', () => {
             isVoiceUnlocked = true;
-            voiceTitleText.textContent = "🎙️ เสียงความรู้สึกจากใจ (ฟังจบแล้ว - ปลดล็อกแล้ว)";
-            voiceStatusLabel.textContent = "ปลดล็อกแล้ว (เลื่อน/หยุดได้)";
+            voiceTitleText.textContent = "🎙️ ฟังจบแล้ว ขอบคุณนะ เผื่ออยากซ้ำนะะ";
+            voiceStatusLabel.textContent = "ฟังจบแล้ว(เลื่อน/หยุดได้)";
             voiceProgressContainer.classList.add('unlocked');
             voicePlayPauseBtn.style.display = 'inline-block';
-            voicePlayPauseBtn.textContent = "▶ เล่นเสียงบรรยายซ้ำ";
+            voicePlayPauseBtn.textContent = "▶ ฟังอีกรอบ";
         });
 
         function setVoicePosition(e) {
@@ -649,10 +649,11 @@
 
         // --- ระบบ Music Player & Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก) ---
         const playlist = [
-            { title: "เพลงที่ 1 (เสียงร้องของคุณ)", src: "music1.mp3" },
-            { title: "เพลงที่ 2 (ความทรงจำของเรา)", src: "music2.mp3" },
-            { title: "เพลงที่ 3 (สุขสันต์วันเกิด)", src: "music3.mp3" },
-            { title: "เพลงที่ 4 (เพลงพิเศษสำหรับเธอ)", src: "music4.mp3" }
+            { title: " THE MAN WHO CAN'T BE MOVED(ร้องสดเพราะกว่า(แหละะ))", src: "music1.mp3" },
+            { title: "คนทางนั้น(ร้องสดเพราะกว่า(แหละะ))", src: "music2.mp3" },
+            { title: "ALICE(ร้องสดเพราะกว่า(แหละะ))", src: "music3.mp3" },
+            { title: "REBORN(ร้องสดเพราะกว่า(แหละะ))", src: "music4.mp3" },
+            { title: "พูดไม่คิด(ร้องสดเพราะกว่า(แหละะ))", src: "music5.mp3" }
         ];
 
         let currentSongIndex = 0;
@@ -703,7 +704,7 @@
         function loadSong(index) {
             currentSongIndex = index;
             audio.src = playlist[currentSongIndex].src;
-            currentSongTitle.textContent = `🎵 NOW PLAYING: ${playlist[currentSongIndex].title}`;
+            currentSongTitle.textContent = `🎵 SONG: ${playlist[currentSongIndex].title}`;
             renderPlaylist();
         }
 
