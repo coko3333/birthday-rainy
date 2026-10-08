@@ -33,8 +33,8 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(74, 66, 56, 0.6); /* สีเทาเข้มโปร่งใส มองเห็นเว็บข้างหลังลางๆ */
-            backdrop-filter: blur(4px); /* เบลอฉากหลังนิดหน่อยให้ดูละมุน */
+            background: rgba(74, 66, 56, 0.6);
+            backdrop-filter: blur(4px);
             z-index: 9999;
             display: flex;
             justify-content: center;
@@ -94,6 +94,59 @@
             position: relative;
         }
 
+        /* จัดการการแสดงผลของหน้า (Pages) */
+        .page {
+            display: none;
+            width: 100%;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        /* ส่วนกล่องแจ้งเตือนและปุ่มไปหน้าถัดไป (อยู่ด้านบนรูป) */
+        .top-nav-box {
+            background: #f4efe6;
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-nav-text {
+            font-size: 13px;
+            color: #7a6a56;
+            font-weight: 400;
+        }
+
+        .next-page-btn {
+            background: #a8937e;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, opacity 0.3s, transform 0.2s;
+            opacity: 0.4;
+            pointer-events: none; /* ล็อคไว้จนกว่าจะฟังเสียงจบ */
+        }
+
+        .next-page-btn.unlocked {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .next-page-btn:hover.unlocked {
+            background: #957f6b;
+            transform: scale(1.02);
+        }
+
         /* Voice Note Section */
         .voice-note-box {
             background: #f4efe6;
@@ -118,7 +171,7 @@
             overflow: hidden;
             margin-bottom: 12px;
             position: relative;
-            pointer-events: none; /* ตอนแรกยังไม่จบ จะห้ามคลิกเลื่อน */
+            pointer-events: none;
             cursor: default;
         }
 
@@ -133,7 +186,7 @@
             background: #a8937e;
         }
 
-        /* Audio Player Section (เครื่องเล่นเพลงด้านล่าง: ปิดไว้ก่อนตอนแรก) */
+        /* Audio Player Section */
         .audio-player-box {
             background: #f4efe6;
             padding: 15px;
@@ -378,99 +431,121 @@
     </div>
 
     <div class="container">
-        <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
-        <div class="slideshow-container" id="slideshow">
-            <div class="slide active"><img src="pic0.jpeg" alt="Memory 0"></div>
-            <div class="slide"><img src="pic1.jpeg" alt="Memory 1"></div>
-            <div class="slide"><img src="pic2.png" alt="Memory 2"></div>
-            <div class="slide"><img src="pic3.png" alt="Memory 3"></div>
-            <div class="slide"><img src="pic4.jpeg" alt="Memory 4"></div>
-            <div class="slide"><img src="pic5.jpeg" alt="Memory 5"></div>
-            <div class="slide"><img src="pic6.png" alt="Memory 6"></div>
-            <div class="slide"><img src="pic7.jpeg" alt="Memory 7"></div>
-            <div class="slide"><img src="pic8.jpeg" alt="Memory 8"></div>
-            <div class="slide"><img src="pic9.jpeg" alt="Memory 9"></div>
-            <div class="slide"><img src="pic10.jpeg" alt="Memory 10"></div>
-            <div class="slide"><img src="pic11.jpeg" alt="Memory 11"></div>
-            <div class="slide"><img src="pic12.png" alt="Memory 12"></div>
-            <div class="slide"><img src="pic13.jpeg" alt="Memory 13"></div>
-            <div class="slide"><img src="pic14.jpeg" alt="Memory 14"></div>
-            <div class="slide"><img src="pic15.jpeg" alt="Memory 15"></div>
-            <div class="slide"><img src="pic16.jpeg" alt="Memory 16"></div>
-            <div class="slide"><img src="pic17.jpeg" alt="Memory 17"></div>
-            <div class="slide"><img src="pic18.jpeg" alt="Memory 18"></div>
-            <div class="slide"><img src="pic19.jpeg" alt="Memory 19"></div>
-            <div class="slide"><img src="pic20.jpeg" alt="Memory 20"></div>
-            <div class="slide"><img src="pic21.jpeg" alt="Memory 21"></div>
-            <div class="slide"><img src="pic22.jpeg" alt="Memory 22"></div>
-            <div class="slide"><img src="pic23.jpeg" alt="Memory 23"></div>
-            <div class="slide"><img src="pic24.jpeg" alt="Memory 24"></div>
-            <div class="slide"><img src="pic25.jpeg" alt="Memory 25"></div>
-            <div class="slide"><img src="pic26.jpeg" alt="Memory 26"></div>
-            <div class="slide"><img src="pic27.jpeg" alt="Memory 27"></div>
-            <div class="slide"><img src="memory28.png" alt="Memory 28"></div>
-            <div class="slide"><img src="pic29.jpeg" alt="Memory 29"></div>
-            <div class="slide"><img src="pic30.jpeg" alt="Memory 30"></div>
-            <div class="slide"><img src="pic31.jpeg" alt="Memory 31"></div>
-            <div class="slide"><img src="pic32.png" alt="Memory 32"></div>
-        </div>
-
-        <!-- ปุ่มดาวน์โหลดรูปปัจจุบัน -->
-        <div class="download-btn-container">
-            <button class="download-btn" onclick="downloadCurrentPhoto()">📥 DOWNLOAD HERE</button>
-        </div>
-
-        <!-- กล่องข้อความบรรยายความรู้สึก -->
-        <div class="caption-box">
-            <p class="caption-text" id="captionText"></p>
-        </div>
-
-        <!-- ปุ่มกดเปลี่ยนรูป -->
-        <div class="nav-buttons">
-            <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ BACK</button>
-            <button class="btn" id="nextBtn" onclick="changeSlide(1)">NEXT ▶</button>
-        </div>
-
-        <!-- 🎙️ ส่วนเสียงบรรยาย -->
-        <div class="voice-note-box" id="voiceNoteBox">
-            <div class="voice-title" id="voiceTitleText">🎙️ PLS ฟังให้จบ(NOW PLAYING)</div>
-            <div class="audio-info">
-                <span id="voiceStatusLabel">🌧️​ได้โปรดฟังให้จบ🤍​</span>
-                <span id="voiceTimeDisplay">0:00 / 0:00</span>
-            </div>
-            <div class="voice-progress-container" id="voiceProgressContainer">
-                <div class="voice-progress-bar" id="voiceProgressBar"></div>
-            </div>
-            <div class="audio-controls">
-                <button class="audio-btn" onclick="rewindVoice()">⏪ GO BACK 5s</button>
-                <button class="audio-btn" id="voicePlayPauseBtn" onclick="toggleVoicePlayPause()" style="display: none;">▶  เล่น</button>
-            </div>
-        </div>
-
-        <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก) -->
-        <div class="audio-player-box">
-            <div class="audio-info">
-                <span id="currentSongTitle">🎵 RENNIE LIST 🤍​🌧️​</span>
-                <span id="timeDisplay">0:00 / 0:00</span>
-            </div>
-            <div class="progress-bar-container" id="progressBarContainer">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <div class="audio-controls">
-                <button class="audio-btn" onclick="prevSong()">⏮ SKIP BACK</button>
-                <button class="audio-btn" id="playPauseBtn" onclick="togglePlayPause()">▶ PLAY</button>
-                <button class="audio-btn" onclick="nextSong()">SKIP NEXT ⏭</button>
+        
+        <!-- 📄 PAGE 1: หน้าหลัก -->
+        <div id="page1" class="page active-page">
+            
+            <!-- 🌟 ส่วนกล่องข้อความและปุ่มไปหน้าถัดไป (อยู่ด้านบนสุดเหนือรูป) -->
+            <div class="top-nav-box">
+                <span class="top-nav-text" id="topNavMessage">🔒 ฟังจบแล้วจะไปหน้าต่อไปได้นะะ</span>
+                <button id="goToPage2Btn" class="next-page-btn" onclick="goToPage(2)">✨ ไปหน้าถัดไปกันเลย ➡</button>
             </div>
 
-            <div class="playlist-box">
-                <div class="playlist-title">🎶 🤍​SONG FOR YOU🤍​ </div>
-                <div id="playlistContainer"></div>
+            <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
+            <div class="slideshow-container" id="slideshow">
+                <div class="slide active"><img src="pic0.jpeg" alt="Memory 0"></div>
+                <div class="slide"><img src="pic1.jpeg" alt="Memory 1"></div>
+                <div class="slide"><img src="pic2.png" alt="Memory 2"></div>
+                <div class="slide"><img src="pic3.png" alt="Memory 3"></div>
+                <div class="slide"><img src="pic4.jpeg" alt="Memory 4"></div>
+                <div class="slide"><img src="pic5.jpeg" alt="Memory 5"></div>
+                <div class="slide"><img src="pic6.png" alt="Memory 6"></div>
+                <div class="slide"><img src="pic7.jpeg" alt="Memory 7"></div>
+                <div class="slide"><img src="pic8.jpeg" alt="Memory 8"></div>
+                <div class="slide"><img src="pic9.jpeg" alt="Memory 9"></div>
+                <div class="slide"><img src="pic10.jpeg" alt="Memory 10"></div>
+                <div class="slide"><img src="pic11.jpeg" alt="Memory 11"></div>
+                <div class="slide"><img src="pic12.png" alt="Memory 12"></div>
+                <div class="slide"><img src="pic13.jpeg" alt="Memory 13"></div>
+                <div class="slide"><img src="pic14.jpeg" alt="Memory 14"></div>
+                <div class="slide"><img src="pic15.jpeg" alt="Memory 15"></div>
+                <div class="slide"><img src="pic16.jpeg" alt="Memory 16"></div>
+                <div class="slide"><img src="pic17.jpeg" alt="Memory 17"></div>
+                <div class="slide"><img src="pic18.jpeg" alt="Memory 18"></div>
+                <div class="slide"><img src="pic19.jpeg" alt="Memory 19"></div>
+                <div class="slide"><img src="pic20.jpeg" alt="Memory 20"></div>
+                <div class="slide"><img src="pic21.jpeg" alt="Memory 21"></div>
+                <div class="slide"><img src="pic22.jpeg" alt="Memory 22"></div>
+                <div class="slide"><img src="pic23.jpeg" alt="Memory 23"></div>
+                <div class="slide"><img src="pic24.jpeg" alt="Memory 24"></div>
+                <div class="slide"><img src="pic25.jpeg" alt="Memory 25"></div>
+                <div class="slide"><img src="pic26.jpeg" alt="Memory 26"></div>
+                <div class="slide"><img src="pic27.jpeg" alt="Memory 27"></div>
+                <div class="slide"><img src="memory28.png" alt="Memory 28"></div>
+                <div class="slide"><img src="pic29.jpeg" alt="Memory 29"></div>
+                <div class="slide"><img src="pic30.jpeg" alt="Memory 30"></div>
+                <div class="slide"><img src="pic31.jpeg" alt="Memory 31"></div>
+                <div class="slide"><img src="pic32.png" alt="Memory 32"></div>
+            </div>
+
+            <!-- ปุ่มดาวน์โหลดรูปปัจจุบัน -->
+            <div class="download-btn-container">
+                <button class="download-btn" onclick="downloadCurrentPhoto()">📥 DOWNLOAD HERE</button>
+            </div>
+
+            <!-- กล่องข้อความบรรยายความรู้สึก -->
+            <div class="caption-box">
+                <p class="caption-text" id="captionText"></p>
+            </div>
+
+            <!-- ปุ่มกดเปลี่ยนรูป -->
+            <div class="nav-buttons">
+                <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ BACK</button>
+                <button class="btn" id="nextBtn" onclick="changeSlide(1)">NEXT ▶</button>
+            </div>
+
+            <!-- 🎙️ ส่วนเสียงบรรยาย -->
+            <div class="voice-note-box" id="voiceNoteBox">
+                <div class="voice-title" id="voiceTitleText">🎙️ PLS ฟังให้จบ(NOW PLAYING)</div>
+                <div class="audio-info">
+                    <span id="voiceStatusLabel">🌧️​ได้โปรดฟังให้จบ🤍​</span>
+                    <span id="voiceTimeDisplay">0:00 / 0:00</span>
+                </div>
+                <div class="voice-progress-container" id="voiceProgressContainer">
+                    <div class="voice-progress-bar" id="voiceProgressBar"></div>
+                </div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="rewindVoice()">⏪ GO BACK 5s</button>
+                    <button class="audio-btn" id="voicePlayPauseBtn" onclick="toggleVoicePlayPause()" style="display: none;">▶ เล่น</button>
+                </div>
+            </div>
+
+            <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist -->
+            <div class="audio-player-box">
+                <div class="audio-info">
+                    <span id="currentSongTitle">🎵 RENNIE LIST 🤍​🌧️​</span>
+                    <span id="timeDisplay">0:00 / 0:00</span>
+                </div>
+                <div class="progress-bar-container" id="progressBarContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="prevSong()">⏮ SKIP BACK</button>
+                    <button class="audio-btn" id="playPauseBtn" onclick="togglePlayPause()">▶ PLAY</button>
+                    <button class="audio-btn" onclick="nextSong()">SKIP NEXT ⏭</button>
+                </div>
+
+                <div class="playlist-box">
+                    <div class="playlist-title">🎶 🤍​SONG FOR YOU🤍​ </div>
+                    <div id="playlistContainer"></div>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                ​🌧️​MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE .KO​
             </div>
         </div>
 
-        <div class="footer-note">
-            ​🌧️​MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE .KO​​
+
+        <!-- 📄 PAGE 2: หน้าว่างๆ สำหรับให้คุณเอาไปดีไซน์เพิ่มทีหลัง -->
+        <div id="page2" class="page">
+            <h2 style="margin-bottom: 20px; color: #5c5042;">🤍 หน้าถัดไป (พื้นที่ว่างสำหรับดีไซน์)</h2>
+            <p style="color: #8c7e6d; margin-bottom: 30px; font-size: 14px;">
+                ยินดีต้อนรับสู่หน้าถัดไปครับ โก้สามารถออกแบบและใส่เนื้อหาในส่วนนี้ได้ตามใจชอบเลย!
+            </p>
+            <button class="btn" onclick="goToPage(1)" style="max-width: 200px; margin: 0 auto;">◀ กลับหน้าแรก</button>
         </div>
+
     </div>
 
     <!-- Element สำหรับเล่นเสียง -->
@@ -478,6 +553,13 @@
     <audio id="bgVoice" preload="auto"></audio>
 
     <script>
+        // --- ระบบสลับหน้าเว็บ (Page Navigation) ---
+        function goToPage(pageNumber) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById('page' + pageNumber).classList.add('active-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const prevBtn = document.getElementById('prevBtn');
@@ -515,7 +597,7 @@
             "ยังไม่กล้าขอจับมือเลยขอโทษนะเธอ ขอบคุนที่มาช่วยนะ",
             "ชื่อจริงที่สวยที่สุดที่คิดถึงที่สุดในชีวิตเค้า",
             "ความทรงจำที่ดีที่สุดในชีวิตเค้าไม่ว่าจะตอนมีความสุขหรือมีน้ำตาและถึงเราจะไม่ได้มีบทสนทนาเค้าก็จะคุยกับเธอในฝัน ไปดูรูปสุดท้ายกันเลย",
-            "คิดถึงนะถึงจะรู้ว่าเธอจะตอบยังไงก็ยังอยากพูด ขอโทดนะเธอ ไก่มาได้มั้บกลับมาได้มั้ยให้เค้าทำอะไรก็ยอมรู็ว่าเป็นไปได้ยากแต่เค้าอยู๋ตรงนี้ตลอดนะตลอดไป"
+            "คิดถึงนะถึงจะรู้ว่าเธอจะตอบยังไงก็ยังอยากพูด ขอโทดนะเธอ ไก่มาได้มั้บกลับมาได้มั้ยให้เค้าทำอะไรก็ยอมรู็ว่าเป็นไปได้ยากแต่เค้าอยู่ตรงนี้ตลอดนะตลอดไป"
         ];
 
         const captionElement = document.getElementById('captionText');
@@ -569,7 +651,7 @@
             document.body.removeChild(a);
         }
 
-        // --- ฟังก์ชันกด Tap to Start เพื่อเปิดหน้าเว็บและเล่นเสียงบรรยายทันที ---
+        // --- ระบบเสียงบรรยาย & ปลดล็อกปุ่มไปหน้าถัดไป ---
         const voiceNote = document.getElementById('voiceNote');
         const voiceProgressBar = document.getElementById('voiceProgressBar');
         const voiceProgressContainer = document.getElementById('voiceProgressContainer');
@@ -577,6 +659,8 @@
         const voiceTitleText = document.getElementById('voiceTitleText');
         const voiceStatusLabel = document.getElementById('voiceStatusLabel');
         const voicePlayPauseBtn = document.getElementById('voicePlayPauseBtn');
+        const goToPage2Btn = document.getElementById('goToPage2Btn');
+        const topNavMessage = document.getElementById('topNavMessage');
         let isVoiceUnlocked = false;
         let isSeekingVoice = false;
 
@@ -587,10 +671,11 @@
                 overlay.style.display = 'none';
             }, 500);
 
-            // สั่งเล่นเสียงบรรยายทันทีหลังจากคลิกปุ่ม
-            voiceNote.play().catch(e => {
-                console.log("Audio play error:", e);
-            });
+            if (localStorage.getItem('rennieVoiceFinished') !== 'true') {
+                voiceNote.play().catch(e => {
+                    console.log("Audio play error:", e);
+                });
+            }
         }
 
         function rewindVoice() {
@@ -598,9 +683,8 @@
         }
 
         function toggleVoicePlayPause() {
-            if (!isVoiceUnlocked) return; 
             if (voiceNote.paused) {
-                voiceNote.play();
+                voiceNote.play().catch(e => console.log("Play error:", e));
                 voicePlayPauseBtn.textContent = "⏸ STOP";
             } else {
                 voiceNote.pause();
@@ -610,7 +694,7 @@
 
         voiceNote.addEventListener('loadedmetadata', () => {
             if (voiceNote.duration) {
-                voiceTimeDisplay.textContent = formatTime(0) + ' / ' + formatTime(voiceNote.duration);
+                voiceTimeDisplay.textContent = formatTime(voiceNote.currentTime) + ' / ' + formatTime(voiceNote.duration);
             }
         });
 
@@ -622,18 +706,36 @@
             }
         });
 
-        // เมื่อเสียงบรรยายเล่นจบ! ทำการปลดล็อกทันที
-        voiceNote.addEventListener('ended', () => {
+        // ฟังก์ชันเมื่อฟังเสียงจบ
+        function unlockEverything() {
             isVoiceUnlocked = true;
             voiceTitleText.textContent = "🎙️ ฟังจบแล้ว ขอบคุณนะ เผื่ออยากซ้ำนะะ";
             voiceStatusLabel.textContent = "ฟังจบแล้ว(เลื่อน/หยุดได้)";
             voiceProgressContainer.classList.add('unlocked');
             voicePlayPauseBtn.style.display = 'inline-block';
             voicePlayPauseBtn.textContent = "▶ ฟังอีกรอบ";
+            
+            // ปลดล็อกปุ่มและเปลี่ยนข้อความด้านบน
+            goToPage2Btn.classList.add('unlocked');
+            topNavMessage.textContent = "✨ ฟังจบแล้ว ไปหน้าต่อไปได้เลยนะะ";
+
+            // บันทึกสถานะลงในเครื่อง
+            localStorage.setItem('rennieVoiceFinished', 'true');
+        }
+
+        voiceNote.addEventListener('ended', () => {
+            unlockEverything();
+        });
+
+        // 🔍 ตรวจสอบสถานะตอนเปิดเว็บ (ถ้าเคยฟังจบแล้ว รีเฟรชมาก็ปลดล็อกปุ่มทันที)
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('rennieVoiceFinished') === 'true') {
+                unlockEverything();
+                voiceProgressBar.style.width = '100%';
+            }
         });
 
         function setVoicePosition(e) {
-            if (!isVoiceUnlocked) return 0;
             const rect = voiceProgressContainer.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             let clickPosition = (clientX - rect.left) / rect.width;
@@ -666,8 +768,7 @@
             }
         });
 
-
-        // --- ระบบ Music Player & Playlist (ด้านล่าง: ปิดไว้ก่อนตอนแรก) ---
+        // --- ระบบ Music Player & Playlist ---
         const playlist = [
             { title: " THE MAN WHO CAN'T BE MOVED(ร้องสดเพราะกว่า(แหละะ))", src: "music1.mp3" },
             { title: "คนทางนั้น(ร้องสดเพราะกว่า(แหละะ))", src: "music2.mp3" },
@@ -844,7 +945,6 @@
         renderPlaylist();
         currentSongTitle.textContent = `🎵 RENNIE LIST 🤍​🌧️​`;
 
-
         // --- ระบบซูมภาพ (Zoom & Pan) ---
         let scale = 1;
         let pannedX = 0, pannedY = 0;
@@ -898,28 +998,32 @@
             }, { passive: true });
 
             img.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1 && isDragging) {
+                if (isDragging && e.touches.length === 1 && scale > 1) {
                     pannedX = e.touches[0].clientX - startX;
                     pannedY = e.touches[0].clientY - startY;
                     updateTransform(img);
                 } else if (e.touches.length === 2 && initialDistance) {
                     const currentDistance = getHypot(e.touches[0], e.touches[1]);
-                    const zoomFactor = currentDistance / initialDistance;
-                    scale = Math.min(Math.max(1, scale * (zoomFactor * 0.05 + 0.95)), 4);
+                    let newScale = scale * (currentDistance / initialDistance);
+                    scale = Math.max(1, Math.min(newScale, 4));
                     initialDistance = currentDistance;
                     updateTransform(img);
                 }
             }, { passive: true });
 
             img.addEventListener('touchend', (e) => {
-                if (e.touches.length < 2) initialDistance = null;
-                if (e.touches.length === 0) isDragging = false;
-            });
+                if (e.touches.length < 2) {
+                    initialDistance = null;
+                }
+                if (e.touches.length === 0) {
+                    isDragging = false;
+                }
+            }, { passive: true });
         });
 
-        function getHypot(t1, t2) {
-            const dx = t1.clientX - t2.clientX;
-            const dy = t1.clientY - t2.clientY;
+        function getHypot(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
             return Math.sqrt(dx * dx + dy * dy);
         }
 
@@ -929,6 +1033,5 @@
 
         updateSlide();
     </script>
-
 </body>
 </html>
