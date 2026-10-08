@@ -26,7 +26,7 @@
             padding: 20px;
         }
 
-        /* หน้าต่าง Tap to Start คลุมทับหน้าเว็บโปร่งใส */
+        /* หน้าต่าง Tap to Start */
         #welcomeOverlay {
             position: fixed;
             top: 0;
@@ -104,7 +104,7 @@
             display: block;
         }
 
-        /* ส่วนกล่องแจ้งเตือนและปุ่มไปหน้าถัดไป (แสดงตลอดเวลา แต่จะล็อกไว้ถ้ายังไม่จบ) */
+        /* ส่วนกล่องแจ้งเตือนและปุ่มไปหน้าถัดไป */
         .top-nav-box {
             background: #f4efe6;
             padding: 12px 15px;
@@ -134,12 +134,12 @@
             cursor: pointer;
             transition: background 0.3s, opacity 0.3s, transform 0.2s;
             opacity: 0.4;
-            pointer-events: none; /* ล็อคไว้ไม่ให้กดจนกว่าจะฟังจบ */
+            pointer-events: none;
         }
 
         .next-page-btn.unlocked {
             opacity: 1;
-            pointer-events: auto; /* ปลดล็อกให้กดได้ */
+            pointer-events: auto;
         }
 
         .next-page-btn:hover.unlocked {
@@ -418,30 +418,48 @@
             padding-top: 15px;
         }
 
-        /* 🌟 ดีไซน์สำหรับ PAGE 2 (แกลเลอรี 9 รูป + เพลง 4 เพลง) */
+        /* 🌟 ดีไซน์ PAGE 2: แกลเลอรีแบบเลื่อนแนวนอน (Horizontal Scroll) รองรับรูปเกิน 9 รูป */
         .page2-title {
             font-size: 18px;
             color: #5c5042;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 500;
+            text-align: left;
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+        .gallery-scroll-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 10px;
             margin-bottom: 25px;
+            scrollbar-width: thin;
+            scrollbar-color: #a8937e #e8dcc4;
+        }
+
+        .gallery-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .gallery-scroll-container::-webkit-scrollbar-track {
+            background: #e8dcc4;
+            border-radius: 4px;
+        }
+
+        .gallery-scroll-container::-webkit-scrollbar-thumb {
+            background: #a8937e;
+            border-radius: 4px;
         }
 
         .gallery-item {
-            width: 100%;
-            aspect-ratio: 1 / 1;
+            flex: 0 0 130px;
+            height: 130px;
             background: #f4efe6;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            scroll-snap-align: start;
+            border: 1px solid #e8dcc4;
         }
 
         .gallery-item img {
@@ -467,10 +485,9 @@
         <!-- 📄 PAGE 1: หน้าหลัก -->
         <div id="page1" class="page active-page">
             
-            <!-- กล่องปุ่มไปหน้าถัดไป (แสดงตั้งแต่เปิดเว็บ แต่จะถูกล็อกไว้จนกว่าจะฟังจบ) -->
             <div class="top-nav-box">
                 <span class="top-nav-text" id="topNavMessage">🔒 ฟังจบแล้วจะไปหน้าต่อไปได้นะะ</span>
-                <button id="goToPage2Btn" class="next-page-btn" onclick="goToPage(2)">✨ ไปหน้าถัดไปกันเลย ➡</button>
+                <button id="goToPage2Btn" class="next-page-btn" onclick="goToPage(2)">✨ ไปหน้าถัดไปกันเลยย ➡</button>
             </div>
 
             <div class="slideshow-container" id="slideshow">
@@ -563,11 +580,11 @@
         </div>
 
 
-        <!-- 📄 PAGE 2: แกลเลอรี 9 รูป + เพลง 4 เพลง -->
+        <!-- 📄 PAGE 2: แกลเลอรีเลื่อนแนวนอน + เพลง 4 เพลง -->
         <div id="page2" class="page">
             <h2 class="page2-title">✨ OUR SPECIAL GALLERY 🤍</h2>
             
-            <div class="gallery-grid">
+            <div class="gallery-scroll-container">
                 <div class="gallery-item"><img src="new_pic1.jpeg" alt="Gallery 1"></div>
                 <div class="gallery-item"><img src="new_pic2.jpeg" alt="Gallery 2"></div>
                 <div class="gallery-item"><img src="new_pic3.jpeg" alt="Gallery 3"></div>
@@ -577,11 +594,14 @@
                 <div class="gallery-item"><img src="new_pic7.jpeg" alt="Gallery 7"></div>
                 <div class="gallery-item"><img src="new_pic8.jpeg" alt="Gallery 8"></div>
                 <div class="gallery-item"><img src="new_pic9.jpeg" alt="Gallery 9"></div>
+                <div class="gallery-item"><img src="new_pic10.jpeg" alt="Gallery 10"></div>
+                <div class="gallery-item"><img src="new_pic11.jpeg" alt="Gallery 11"></div>
+                <div class="gallery-item"><img src="new_pic12.jpeg" alt="Gallery 12"></div>
             </div>
 
             <div class="audio-player-box">
                 <div class="audio-info">
-                    <span id="specialSongTitle">🎤 เพลงพิเศษที่เค้าร้องให้เธอ 4 เพลง 🤍</span>
+                    <span id="specialSongTitle">🎤  SONG FOR U 🤍</span>
                     <span id="specialTimeDisplay">0:00 / 0:00</span>
                 </div>
                 <div class="progress-bar-container" id="specialProgressBarContainer">
@@ -594,7 +614,7 @@
                 </div>
 
                 <div class="playlist-box">
-                    <div class="playlist-title">🎶 🤍​ KO'S SPECIAL VOCAL 🤍​ </div>
+                    <div class="playlist-title">🎶 🤍​ โก้ไปเรื่อยยเพราะว่าอยู่ตรงนี้เรื่อยไป 🤍​ </div>
                     <div id="specialPlaylistContainer"></div>
                 </div>
             </div>
@@ -653,7 +673,7 @@
             "ยังไม่กล้าขอจับมือเลยขอโทษนะเธอ ขอบคุนที่มาช่วยนะ",
             "ชื่อจริงที่สวยที่สุดที่คิดถึงที่สุดในชีวิตเค้า",
             "ความทรงจำที่ดีที่สุดในชีวิตเค้าไม่ว่าจะตอนมีความสุขหรือมีน้ำตาและถึงเราจะไม่ได้มีบทสนทนาเค้าก็จะคุยกับเธอในฝัน ไปดูรูปสุดท้ายกันเลย",
-            "คิดถึงนะถึงจะรู้ว่าเธอจะตอบยังไงก็ยังอยากพูด ขอโทดนะเธอ ไก่มาได้มั้บกลับมาได้มั้ยให้เค้าทำอะไรก็ยอมรู็ว่าเป็นไปได้ยากแต่เค้าอยู่ตรงนี้ตลอดนะตลอดไป"
+            "คิดถึงนะถึงจะรู้ว่าเธอจะตอบยังไงก็ยังอยากพูด ขอโทดนะเธอ ไก่มาได้มั้บกลับมาได้มั้ยให้เค้าทำอะไรก็ยอมรู็ว่าเป็นไปได้ยากแต่เค้าอยู่ตรงนี้ตลอดนะตลอดไปเพราะว่าเค้าไม่เคยได้พูดพวกนี้เลยกลับว่าจะเร็วไปแต่ตอนนี้กลัวจะช้าไปแต่ใจเค้าเก็บคำนี้มาตลอดตั้งแต่รู้ตัวว่าทำพลาดทำผิดทุกอย่างเค้าขอโทดนะเธอ"
         ];
 
         const captionElement = document.getElementById('captionText');
@@ -848,6 +868,10 @@
                 songInfo.style.flex = '1';
                 songInfo.textContent = `${index + 1}. ${song.title}`;
                 songInfo.onclick = () => {
+                    // หยุดเพลงหน้าสองทันที
+                    specialAudio.pause();
+                    specialPlayPauseBtn.textContent = "▶ PLAY";
+
                     loadSong(index);
                     audio.play();
                     updatePlayPauseButton();
@@ -880,6 +904,10 @@
         }
 
         function togglePlayPause() {
+            // 🛑 สั่งหยุดเพลงหน้าสองทันที
+            specialAudio.pause();
+            specialPlayPauseBtn.textContent = "▶ PLAY";
+
             if (audio.paused) {
                 if (!audio.src || audio.src === window.location.href) {
                     loadSong(0);
@@ -901,6 +929,9 @@
         }
 
         function nextSong() {
+            specialAudio.pause();
+            specialPlayPauseBtn.textContent = "▶ PLAY";
+
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
             loadSong(currentSongIndex);
             audio.play();
@@ -908,6 +939,9 @@
         }
 
         function prevSong() {
+            specialAudio.pause();
+            specialPlayPauseBtn.textContent = "▶ PLAY";
+
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
             loadSong(currentSongIndex);
             audio.play();
@@ -934,10 +968,10 @@
 
         // --- ระบบ Playlist 4 เพลงใหม่ในหน้า 2 ---
         const specialPlaylist = [
-            { title: "เพลงที่ 1 (ใส่ชื่อเพลงของคุณ)", src: "special1.mp3" },
-            { title: "เพลงที่ 2 (ใส่ชื่อเพลงของคุณ)", src: "special2.mp3" },
-            { title: "เพลงที่ 3 (ใส่ชื่อเพลงของคุณ)", src: "special3.mp3" },
-            { title: "เพลงที่ 4 (ใส่ชื่อเพลงของคุณ)", src: "special4.mp3" }
+            { title: "SONG FOR YOU 1", src: "special1.mp3" },
+            { title: "SONG FOR YOU 2", src: "special2.mp3" },
+            { title: "SONG FOR YOU 3", src: "special3.mp3" },
+            { title: "SONG FOR YOU 4", src: "special4.mp3" }
         ];
 
         let currentSpecialIndex = 0;
@@ -960,6 +994,10 @@
                 songInfo.style.flex = '1';
                 songInfo.textContent = `${index + 1}. ${song.title}`;
                 songInfo.onclick = () => {
+                    // หยุดเพลงหน้าแรกทันที
+                    audio.pause();
+                    updatePlayPauseButton();
+
                     loadSpecialSong(index);
                     specialAudio.play();
                     updateSpecialPlayPauseButton();
@@ -992,6 +1030,10 @@
         }
 
         function toggleSpecialPlayPause() {
+            // 🛑 สั่งหยุดเพลงหน้าแรกทันที
+            audio.pause();
+            updatePlayPauseButton();
+
             if (specialAudio.paused) {
                 if (!specialAudio.src || specialAudio.src === window.location.href) {
                     loadSpecialSong(0);
@@ -1013,6 +1055,9 @@
         }
 
         function nextSpecialSong() {
+            audio.pause();
+            updatePlayPauseButton();
+
             currentSpecialIndex = (currentSpecialIndex + 1) % specialPlaylist.length;
             loadSpecialSong(currentSpecialIndex);
             specialAudio.play();
@@ -1020,6 +1065,9 @@
         }
 
         function prevSpecialSong() {
+            audio.pause();
+            updatePlayPauseButton();
+
             currentSpecialIndex = (currentSpecialIndex - 1 + specialPlaylist.length) % specialPlaylist.length;
             loadSpecialSong(currentSpecialIndex);
             specialAudio.play();
