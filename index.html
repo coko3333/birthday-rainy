@@ -418,7 +418,7 @@
             padding-top: 15px;
         }
 
-        /* 🌟 ดีไซน์ PAGE 2: แกลเลอรีแบบเลื่อนแนวนอน (Horizontal Scroll) รองรับรูปเกิน 9 รูป */
+        /* 🌟 PAGE 2: แกลเลอรีเลื่อนแนวนอน + ปุ่มดาวน์โหลดใต้รูปแต่ละรูป */
         .page2-title {
             font-size: 18px;
             color: #5c5042;
@@ -452,20 +452,46 @@
             border-radius: 4px;
         }
 
-        .gallery-item {
-            flex: 0 0 130px;
-            height: 130px;
+        .gallery-card {
+            flex: 0 0 140px;
             background: #f4efe6;
             border-radius: 12px;
             overflow: hidden;
             scroll-snap-align: start;
             border: 1px solid #e8dcc4;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 8px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 130px;
+            background: #1a1a1a;
+            overflow: hidden;
         }
 
         .gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .gallery-dl-btn {
+            background: #a8937e;
+            color: #ffffff;
+            border: none;
+            font-family: 'Prompt', sans-serif;
+            font-size: 11px;
+            padding: 5px;
+            margin: 6px 8px 2px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .gallery-dl-btn:hover {
+            background: #957f6b;
         }
     </style>
 </head>
@@ -575,33 +601,69 @@
             </div>
 
             <div class="footer-note">
-                ​🌧️​MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE .KO​
+                ​🌧️​MISSING YOU, AND ALWAYS HOPING YOU DONE WELL, WITH LOVE AND CARE .KO
             </div>
         </div>
 
 
-        <!-- 📄 PAGE 2: แกลเลอรีเลื่อนแนวนอน + เพลง 4 เพลง -->
+        <!-- 📄 PAGE 2: แกลเลอรีเลื่อนแนวนอน + ปุ่มดาวน์โหลดใต้รูปแต่ละรูป -->
         <div id="page2" class="page">
             <h2 class="page2-title">✨ OUR SPECIAL GALLERY 🤍</h2>
             
             <div class="gallery-scroll-container">
-                <div class="gallery-item"><img src="new_pic1.jpeg" alt="Gallery 1"></div>
-                <div class="gallery-item"><img src="new_pic2.jpeg" alt="Gallery 2"></div>
-                <div class="gallery-item"><img src="new_pic3.jpeg" alt="Gallery 3"></div>
-                <div class="gallery-item"><img src="new_pic4.jpeg" alt="Gallery 4"></div>
-                <div class="gallery-item"><img src="new_pic5.jpeg" alt="Gallery 5"></div>
-                <div class="gallery-item"><img src="new_pic6.jpeg" alt="Gallery 6"></div>
-                <div class="gallery-item"><img src="new_pic7.jpeg" alt="Gallery 7"></div>
-                <div class="gallery-item"><img src="new_pic8.jpeg" alt="Gallery 8"></div>
-                <div class="gallery-item"><img src="new_pic9.jpeg" alt="Gallery 9"></div>
-                <div class="gallery-item"><img src="new_pic10.jpeg" alt="Gallery 10"></div>
-                <div class="gallery-item"><img src="new_pic11.jpeg" alt="Gallery 11"></div>
-                <div class="gallery-item"><img src="new_pic12.jpeg" alt="Gallery 12"></div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic1.jpeg" alt="Gallery 1"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic1.jpeg', 'Gallery_1.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic2.jpeg" alt="Gallery 2"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic2.jpeg', 'Gallery_2.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic3.jpeg" alt="Gallery 3"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic3.jpeg', 'Gallery_3.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic4.jpeg" alt="Gallery 4"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic4.jpeg', 'Gallery_4.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic5.jpeg" alt="Gallery 5"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic5.jpeg', 'Gallery_5.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic6.jpeg" alt="Gallery 6"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic6.jpeg', 'Gallery_6.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic7.jpeg" alt="Gallery 7"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic7.jpeg', 'Gallery_7.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic8.jpeg" alt="Gallery 8"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic8.jpeg', 'Gallery_8.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic9.jpeg" alt="Gallery 9"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic9.jpeg', 'Gallery_9.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic10.jpeg" alt="Gallery 10"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic10.jpeg', 'Gallery_10.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic11.jpeg" alt="Gallery 11"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic11.jpeg', 'Gallery_11.jpeg')">📥 SAVE</button>
+                </div>
+                <div class="gallery-card">
+                    <div class="gallery-item"><img src="new_pic12.jpeg" alt="Gallery 12"></div>
+                    <button class="gallery-dl-btn" onclick="downloadGalleryImage('new_pic12.jpeg', 'Gallery_12.jpeg')">📥 SAVE</button>
+                </div>
             </div>
 
             <div class="audio-player-box">
                 <div class="audio-info">
-                    <span id="specialSongTitle">🎤  SONG FOR U 🤍</span>
+                    <span id="specialSongTitle">🎤 เพลงพิเศษที่เค้าร้องให้เธอ 4 เพลง 🤍</span>
                     <span id="specialTimeDisplay">0:00 / 0:00</span>
                 </div>
                 <div class="progress-bar-container" id="specialProgressBarContainer">
@@ -614,7 +676,7 @@
                 </div>
 
                 <div class="playlist-box">
-                    <div class="playlist-title">🎶 🤍​ โก้ไปเรื่อยยเพราะว่าอยู่ตรงนี้เรื่อยไป 🤍​ </div>
+                    <div class="playlist-title">🎶 🤍​ KO'S SPECIAL VOCAL 🤍​ </div>
                     <div id="specialPlaylistContainer"></div>
                 </div>
             </div>
@@ -722,6 +784,16 @@
             const a = document.createElement('a');
             a.href = imgSrc;
             a.download = `Memory_${currentSlide}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // ฟังก์ชันดาวน์โหลดรูปในแกลเลอรีหน้า 2
+        function downloadGalleryImage(imgSrc, fileName) {
+            const a = document.createElement('a');
+            a.href = imgSrc;
+            a.download = fileName;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -868,7 +940,6 @@
                 songInfo.style.flex = '1';
                 songInfo.textContent = `${index + 1}. ${song.title}`;
                 songInfo.onclick = () => {
-                    // หยุดเพลงหน้าสองทันที
                     specialAudio.pause();
                     specialPlayPauseBtn.textContent = "▶ PLAY";
 
@@ -904,7 +975,6 @@
         }
 
         function togglePlayPause() {
-            // 🛑 สั่งหยุดเพลงหน้าสองทันที
             specialAudio.pause();
             specialPlayPauseBtn.textContent = "▶ PLAY";
 
@@ -994,7 +1064,6 @@
                 songInfo.style.flex = '1';
                 songInfo.textContent = `${index + 1}. ${song.title}`;
                 songInfo.onclick = () => {
-                    // หยุดเพลงหน้าแรกทันที
                     audio.pause();
                     updatePlayPauseButton();
 
@@ -1030,7 +1099,6 @@
         }
 
         function toggleSpecialPlayPause() {
-            // 🛑 สั่งหยุดเพลงหน้าแรกทันที
             audio.pause();
             updatePlayPauseButton();
 
