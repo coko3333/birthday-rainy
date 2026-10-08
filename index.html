@@ -104,7 +104,7 @@
             display: block;
         }
 
-        /* ส่วนกล่องแจ้งเตือนและปุ่มไปหน้าถัดไป (อยู่ด้านบนรูป) */
+        /* ส่วนกล่องแจ้งเตือนและปุ่มไปหน้าถัดไป (แสดงตลอดเวลา แต่จะล็อกไว้ถ้ายังไม่จบ) */
         .top-nav-box {
             background: #f4efe6;
             padding: 12px 15px;
@@ -134,12 +134,12 @@
             cursor: pointer;
             transition: background 0.3s, opacity 0.3s, transform 0.2s;
             opacity: 0.4;
-            pointer-events: none; /* ล็อคไว้จนกว่าจะฟังเสียงจบ */
+            pointer-events: none; /* ล็อคไว้ไม่ให้กดจนกว่าจะฟังจบ */
         }
 
         .next-page-btn.unlocked {
             opacity: 1;
-            pointer-events: auto;
+            pointer-events: auto; /* ปลดล็อกให้กดได้ */
         }
 
         .next-page-btn:hover.unlocked {
@@ -417,11 +417,43 @@
             border-top: 1px solid #f0ebe1;
             padding-top: 15px;
         }
+
+        /* 🌟 ดีไซน์สำหรับ PAGE 2 (แกลเลอรี 9 รูป + เพลง 4 เพลง) */
+        .page2-title {
+            font-size: 18px;
+            color: #5c5042;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #f4efe6;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
 
-    <!-- หน้าต่าง Tap to Start (สีเทาโปร่งใส คลุมทับเว็บด้านหลัง) -->
+    <!-- หน้าต่าง Tap to Start -->
     <div id="welcomeOverlay">
         <div class="welcome-card">
             <h2>✨ Happy Birthday to U na Rennie</h2>
@@ -435,13 +467,12 @@
         <!-- 📄 PAGE 1: หน้าหลัก -->
         <div id="page1" class="page active-page">
             
-            <!-- 🌟 ส่วนกล่องข้อความและปุ่มไปหน้าถัดไป (อยู่ด้านบนสุดเหนือรูป) -->
+            <!-- กล่องปุ่มไปหน้าถัดไป (แสดงตั้งแต่เปิดเว็บ แต่จะถูกล็อกไว้จนกว่าจะฟังจบ) -->
             <div class="top-nav-box">
                 <span class="top-nav-text" id="topNavMessage">🔒 ฟังจบแล้วจะไปหน้าต่อไปได้นะะ</span>
                 <button id="goToPage2Btn" class="next-page-btn" onclick="goToPage(2)">✨ ไปหน้าถัดไปกันเลย ➡</button>
             </div>
 
-            <!-- พื้นที่แสดงรูปภาพสไลด์โชว์ -->
             <div class="slideshow-container" id="slideshow">
                 <div class="slide active"><img src="pic0.jpeg" alt="Memory 0"></div>
                 <div class="slide"><img src="pic1.jpeg" alt="Memory 1"></div>
@@ -478,23 +509,19 @@
                 <div class="slide"><img src="pic32.png" alt="Memory 32"></div>
             </div>
 
-            <!-- ปุ่มดาวน์โหลดรูปปัจจุบัน -->
             <div class="download-btn-container">
                 <button class="download-btn" onclick="downloadCurrentPhoto()">📥 DOWNLOAD HERE</button>
             </div>
 
-            <!-- กล่องข้อความบรรยายความรู้สึก -->
             <div class="caption-box">
                 <p class="caption-text" id="captionText"></p>
             </div>
 
-            <!-- ปุ่มกดเปลี่ยนรูป -->
             <div class="nav-buttons">
                 <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ BACK</button>
                 <button class="btn" id="nextBtn" onclick="changeSlide(1)">NEXT ▶</button>
             </div>
 
-            <!-- 🎙️ ส่วนเสียงบรรยาย -->
             <div class="voice-note-box" id="voiceNoteBox">
                 <div class="voice-title" id="voiceTitleText">🎙️ PLS ฟังให้จบ(NOW PLAYING)</div>
                 <div class="audio-info">
@@ -510,7 +537,6 @@
                 </div>
             </div>
 
-            <!-- 🎵 ส่วนเครื่องเล่นเพลงและ Playlist -->
             <div class="audio-player-box">
                 <div class="audio-info">
                     <span id="currentSongTitle">🎵 RENNIE LIST 🤍​🌧️​</span>
@@ -537,13 +563,43 @@
         </div>
 
 
-        <!-- 📄 PAGE 2: หน้าว่างๆ สำหรับให้คุณเอาไปดีไซน์เพิ่มทีหลัง -->
+        <!-- 📄 PAGE 2: แกลเลอรี 9 รูป + เพลง 4 เพลง -->
         <div id="page2" class="page">
-            <h2 style="margin-bottom: 20px; color: #5c5042;">🤍 หน้าถัดไป (พื้นที่ว่างสำหรับดีไซน์)</h2>
-            <p style="color: #8c7e6d; margin-bottom: 30px; font-size: 14px;">
-                ยินดีต้อนรับสู่หน้าถัดไปครับ โก้สามารถออกแบบและใส่เนื้อหาในส่วนนี้ได้ตามใจชอบเลย!
-            </p>
-            <button class="btn" onclick="goToPage(1)" style="max-width: 200px; margin: 0 auto;">◀ กลับหน้าแรก</button>
+            <h2 class="page2-title">✨ OUR SPECIAL GALLERY 🤍</h2>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="new_pic1.jpeg" alt="Gallery 1"></div>
+                <div class="gallery-item"><img src="new_pic2.jpeg" alt="Gallery 2"></div>
+                <div class="gallery-item"><img src="new_pic3.jpeg" alt="Gallery 3"></div>
+                <div class="gallery-item"><img src="new_pic4.jpeg" alt="Gallery 4"></div>
+                <div class="gallery-item"><img src="new_pic5.jpeg" alt="Gallery 5"></div>
+                <div class="gallery-item"><img src="new_pic6.jpeg" alt="Gallery 6"></div>
+                <div class="gallery-item"><img src="new_pic7.jpeg" alt="Gallery 7"></div>
+                <div class="gallery-item"><img src="new_pic8.jpeg" alt="Gallery 8"></div>
+                <div class="gallery-item"><img src="new_pic9.jpeg" alt="Gallery 9"></div>
+            </div>
+
+            <div class="audio-player-box">
+                <div class="audio-info">
+                    <span id="specialSongTitle">🎤 เพลงพิเศษที่เค้าร้องให้เธอ 4 เพลง 🤍</span>
+                    <span id="specialTimeDisplay">0:00 / 0:00</span>
+                </div>
+                <div class="progress-bar-container" id="specialProgressBarContainer">
+                    <div class="progress-bar" id="specialProgressBar"></div>
+                </div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="prevSpecialSong()">⏮ SKIP BACK</button>
+                    <button class="audio-btn" id="specialPlayPauseBtn" onclick="toggleSpecialPlayPause()">▶ PLAY</button>
+                    <button class="audio-btn" onclick="nextSpecialSong()">SKIP NEXT ⏭</button>
+                </div>
+
+                <div class="playlist-box">
+                    <div class="playlist-title">🎶 🤍​ KO'S SPECIAL VOCAL 🤍​ </div>
+                    <div id="specialPlaylistContainer"></div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="goToPage(1)" style="max-width: 200px; margin: 20px auto 0 auto; display: block;">◀ กลับหน้าแรก</button>
         </div>
 
     </div>
@@ -551,9 +607,9 @@
     <!-- Element สำหรับเล่นเสียง -->
     <audio id="voiceNote" src="voice.mp3" preload="auto"></audio>
     <audio id="bgVoice" preload="auto"></audio>
+    <audio id="specialAudio" preload="auto"></audio>
 
     <script>
-        // --- ระบบสลับหน้าเว็บ (Page Navigation) ---
         function goToPage(pageNumber) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.getElementById('page' + pageNumber).classList.add('active-page');
@@ -651,7 +707,6 @@
             document.body.removeChild(a);
         }
 
-        // --- ระบบเสียงบรรยาย & ปลดล็อกปุ่มไปหน้าถัดไป ---
         const voiceNote = document.getElementById('voiceNote');
         const voiceProgressBar = document.getElementById('voiceProgressBar');
         const voiceProgressContainer = document.getElementById('voiceProgressContainer');
@@ -706,7 +761,6 @@
             }
         });
 
-        // ฟังก์ชันเมื่อฟังเสียงจบ
         function unlockEverything() {
             isVoiceUnlocked = true;
             voiceTitleText.textContent = "🎙️ ฟังจบแล้ว ขอบคุณนะ เผื่ออยากซ้ำนะะ";
@@ -715,11 +769,9 @@
             voicePlayPauseBtn.style.display = 'inline-block';
             voicePlayPauseBtn.textContent = "▶ ฟังอีกรอบ";
             
-            // ปลดล็อกปุ่มและเปลี่ยนข้อความด้านบน
             goToPage2Btn.classList.add('unlocked');
             topNavMessage.textContent = "✨ ฟังจบแล้ว ไปหน้าต่อไปได้เลยนะะ";
 
-            // บันทึกสถานะลงในเครื่อง
             localStorage.setItem('rennieVoiceFinished', 'true');
         }
 
@@ -727,7 +779,6 @@
             unlockEverything();
         });
 
-        // 🔍 ตรวจสอบสถานะตอนเปิดเว็บ (ถ้าเคยฟังจบแล้ว รีเฟรชมาก็ปลดล็อกปุ่มทันที)
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('rennieVoiceFinished') === 'true') {
                 unlockEverything();
@@ -768,7 +819,7 @@
             }
         });
 
-        // --- ระบบ Music Player & Playlist ---
+        // --- ระบบ Music Player หน้าแรก ---
         const playlist = [
             { title: " THE MAN WHO CAN'T BE MOVED(ร้องสดเพราะกว่า(แหละะ))", src: "music1.mp3" },
             { title: "คนทางนั้น(ร้องสดเพราะกว่า(แหละะ))", src: "music2.mp3" },
@@ -805,7 +856,6 @@
                 const dlBtn = document.createElement('button');
                 dlBtn.className = 'song-dl-btn';
                 dlBtn.innerHTML = '📥 DOWNLOAD';
-                dlBtn.title = 'DOWNLOAD THIS SONG';
                 dlBtn.onclick = (e) => {
                     e.stopPropagation();
                     const a = document.createElement('a');
@@ -882,6 +932,118 @@
             nextSong();
         });
 
+        // --- ระบบ Playlist 4 เพลงใหม่ในหน้า 2 ---
+        const specialPlaylist = [
+            { title: "เพลงที่ 1 (ใส่ชื่อเพลงของคุณ)", src: "special1.mp3" },
+            { title: "เพลงที่ 2 (ใส่ชื่อเพลงของคุณ)", src: "special2.mp3" },
+            { title: "เพลงที่ 3 (ใส่ชื่อเพลงของคุณ)", src: "special3.mp3" },
+            { title: "เพลงที่ 4 (ใส่ชื่อเพลงของคุณ)", src: "special4.mp3" }
+        ];
+
+        let currentSpecialIndex = 0;
+        const specialAudio = document.getElementById('specialAudio');
+        const specialPlayPauseBtn = document.getElementById('specialPlayPauseBtn');
+        const specialProgressBar = document.getElementById('specialProgressBar');
+        const specialProgressBarContainer = document.getElementById('specialProgressBarContainer');
+        const specialTimeDisplay = document.getElementById('specialTimeDisplay');
+        const specialSongTitle = document.getElementById('specialSongTitle');
+        const specialPlaylistContainer = document.getElementById('specialPlaylistContainer');
+        let isSeekingSpecial = false;
+
+        function renderSpecialPlaylist() {
+            specialPlaylistContainer.innerHTML = '';
+            specialPlaylist.forEach((song, index) => {
+                const item = document.createElement('div');
+                item.className = `playlist-item ${index === currentSpecialIndex ? 'active-song' : ''}`;
+                
+                const songInfo = document.createElement('span');
+                songInfo.style.flex = '1';
+                songInfo.textContent = `${index + 1}. ${song.title}`;
+                songInfo.onclick = () => {
+                    loadSpecialSong(index);
+                    specialAudio.play();
+                    updateSpecialPlayPauseButton();
+                };
+
+                const dlBtn = document.createElement('button');
+                dlBtn.className = 'song-dl-btn';
+                dlBtn.innerHTML = '📥 DOWNLOAD';
+                dlBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const a = document.createElement('a');
+                    a.href = song.src;
+                    a.download = song.src;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+
+                item.appendChild(songInfo);
+                item.appendChild(dlBtn);
+                specialPlaylistContainer.appendChild(item);
+            });
+        }
+
+        function loadSpecialSong(index) {
+            currentSpecialIndex = index;
+            specialAudio.src = specialPlaylist[currentSpecialIndex].src;
+            specialSongTitle.textContent = `🎤 ${specialPlaylist[currentSpecialIndex].title}`;
+            renderSpecialPlaylist();
+        }
+
+        function toggleSpecialPlayPause() {
+            if (specialAudio.paused) {
+                if (!specialAudio.src || specialAudio.src === window.location.href) {
+                    loadSpecialSong(0);
+                }
+                specialAudio.play().catch(e => console.log("Play blocked"));
+                specialPlayPauseBtn.textContent = "⏸ STOP";
+            } else {
+                specialAudio.pause();
+                specialPlayPauseBtn.textContent = "▶ PLAY";
+            }
+        }
+
+        function updateSpecialPlayPauseButton() {
+            if (specialAudio.paused) {
+                specialPlayPauseBtn.textContent = "▶ PLAY";
+            } else {
+                specialPlayPauseBtn.textContent = "⏸ STOP";
+            }
+        }
+
+        function nextSpecialSong() {
+            currentSpecialIndex = (currentSpecialIndex + 1) % specialPlaylist.length;
+            loadSpecialSong(currentSpecialIndex);
+            specialAudio.play();
+            updateSpecialPlayPauseButton();
+        }
+
+        function prevSpecialSong() {
+            currentSpecialIndex = (currentSpecialIndex - 1 + specialPlaylist.length) % specialPlaylist.length;
+            loadSpecialSong(currentSpecialIndex);
+            specialAudio.play();
+            updateSpecialPlayPauseButton();
+        }
+
+        specialAudio.addEventListener('loadedmetadata', () => {
+            if (specialAudio.duration) {
+                specialTimeDisplay.textContent = formatTime(specialAudio.currentTime) + ' / ' + formatTime(specialAudio.duration);
+            }
+        });
+
+        specialAudio.addEventListener('timeupdate', () => {
+            if (specialAudio.duration && !isSeekingSpecial) {
+                const progressPercent = (specialAudio.currentTime / specialAudio.duration) * 100;
+                specialProgressBar.style.width = progressPercent + '%';
+                specialTimeDisplay.textContent = formatTime(specialAudio.currentTime) + ' / ' + formatTime(specialAudio.duration);
+            }
+        });
+
+        specialAudio.addEventListener('ended', () => {
+            nextSpecialSong();
+        });
+
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
@@ -920,32 +1082,44 @@
             }
         });
 
-        progressBarContainer.addEventListener('touchstart', (e) => {
-            isSeekingSong = true;
-            setSongPosition(e);
-        }, { passive: true });
+        function setSpecialPosition(e) {
+            const rect = specialProgressBarContainer.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clickPosition = (clientX - rect.left) / rect.width;
+            clickPosition = Math.max(0, Math.min(1, clickPosition));
 
-        window.addEventListener('touchmove', (e) => {
-            if (isSeekingSong) setSongPosition(e);
-        }, { passive: true });
+            if (specialAudio.duration) {
+                specialProgressBar.style.width = (clickPosition * 100) + '%';
+                specialTimeDisplay.textContent = formatTime(clickPosition * specialAudio.duration) + ' / ' + formatTime(specialAudio.duration);
+            }
+            return clickPosition;
+        }
 
-        window.addEventListener('touchend', (e) => {
-            if (isSeekingSong) {
-                isSeekingSong = false;
-                const rect = progressBarContainer.getBoundingClientRect();
-                const touch = e.changedTouches[0];
-                let clickPosition = (touch.clientX - rect.left) / rect.width;
-                clickPosition = Math.max(0, Math.min(1, clickPosition));
-                if (audio.duration) {
-                    audio.currentTime = clickPosition * audio.duration;
+        specialProgressBarContainer.addEventListener('mousedown', (e) => {
+            isSeekingSpecial = true;
+            setSpecialPosition(e);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isSeekingSpecial) setSpecialPosition(e);
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isSeekingSpecial) {
+                isSeekingSpecial = false;
+                const finalPos = setSpecialPosition(e);
+                if (specialAudio.duration) {
+                    specialAudio.currentTime = finalPos * specialAudio.duration;
                 }
             }
         });
 
         renderPlaylist();
+        renderSpecialPlaylist();
         currentSongTitle.textContent = `🎵 RENNIE LIST 🤍​🌧️​`;
+        specialSongTitle.textContent = `🎤 ${specialPlaylist[0].title}`;
 
-        // --- ระบบซูมภาพ (Zoom & Pan) ---
+        // --- ระบบซูมภาพ (Zoom & Pan) หน้าแรก ---
         let scale = 1;
         let pannedX = 0, pannedY = 0;
         let startX = 0, startY = 0;
